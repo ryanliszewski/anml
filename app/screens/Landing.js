@@ -2,8 +2,11 @@ import React, { Component }  from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import  {LinearGradient}   from 'expo';
 
+//Screens
 import LoginScreen from './login';
 
+//Components
+import Intro from '../components/Intro';
 
 export default class LandingScreen extends Component {
   constructor(props){
@@ -31,23 +34,23 @@ export default class LandingScreen extends Component {
             colors={['#FFEBB7','#0E9577']}
             start={{x: 0.0, y: 0.0}}
             end={{x:1.0, y: 1.0}}
-            locations={[0.0,0.95 ]}
+            locations={[0.1,0.8]}
           >
-            <View style={styles.logoContainer}>
-
-            </View>
+              <Intro/>
         </LinearGradient>
           <View style={styles.buttonContainer}>
             <TouchableHighlight
               style={styles.button}
-              
-                >
+              onPress={() => this.setState({currentScreen: null})}
+              underlayColor='#04DEAD'
+            >
               <Text style={styles.buttonText}> Login </Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.button}
-              
-              >
+              onPress={() => this.setState({currentScreen: null})}
+              underlayColor='#04DEAD'
+            >
               <Text style={styles.buttonText}> Sign Up </Text>
             </TouchableHighlight>
           </View> 
@@ -56,7 +59,6 @@ export default class LandingScreen extends Component {
     }
   }
   
-
   render() {
     return(
       this.renderContent()
@@ -72,6 +74,9 @@ const styles = StyleSheet.create({
 
   landingContainer: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
   },
 
   buttonContainer: {
@@ -93,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
 
-  logoContainer: {
+  introContainer: {
 
   }
 });
