@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import  {LinearGradient}   from 'expo';
 
 //Screens
-import LoginScreen from './login';
+import LoginScreen from './Login';
+import RegisterScreen from './Register';
 
 //Components
 import Intro from '../components/Intro';
@@ -26,6 +27,8 @@ export default class LandingScreen extends Component {
 
     if (currentScreen === 'login') {
       return <LoginScreen/>
+    } else if (currentScreen === 'register'){
+      return <RegisterScreen/>
     } else {
       return (
         <View style={styles.mainContainer}>
@@ -41,14 +44,14 @@ export default class LandingScreen extends Component {
           <View style={styles.buttonContainer}>
             <TouchableHighlight
               style={styles.button}
-              onPress={() => this.setState({currentScreen: null})}
+              onPress={() => this.setState({currentScreen: 'login'})}
               underlayColor='#04DEAD'
             >
               <Text style={styles.buttonText}> Login </Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.button}
-              onPress={() => this.setState({currentScreen: null})}
+              onPress={() => this.setState({currentScreen: 'null'})}
               underlayColor='#04DEAD'
             >
               <Text style={styles.buttonText}> Sign Up </Text>

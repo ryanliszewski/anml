@@ -2,7 +2,6 @@ import React, { Component }  from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 
 
-
 export default class Intro extends Component {
 
   render(){
@@ -29,7 +28,7 @@ const styles = StyleSheet.create({
 
   title:{
     paddingTop: 10,
-    fontFamily: 'Futura',
+    fontFamily: 'Futura', 
     fontSize: 36,
     color: '#F1EFB9'
   },
@@ -45,6 +44,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     
-  }
+  },
 
 });
