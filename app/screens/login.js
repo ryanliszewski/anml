@@ -10,11 +10,27 @@ export default class Login extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      buttonEnabled: false,
+      buttonEnabledBorder: ''
+    }
+    this.handleInput = this.handleInput.bind(this)
+  }
+
+  handleInput(input){
+    this.setState({password: input})
+    const {username, password } = this.state;
+
+    if(username.length > 2 && password.length > 7){
+      this.setState({buttonEnabled: true})
+    } else {
+      this.setState({buttonEnabled: false})
     }
   }
 
   render(){
+    const { buttonEnabled }  = this.state 
+    
     return (
       <LinearGradient
       style={styles.mainContainer}
@@ -27,8 +43,6 @@ export default class Login extends React.Component {
       <Text style={styles.title}> anml. </Text> 
         <View style={styles.form}>
 
-       
-
         <View style={styles.inputContainer}>
           <Ionicons 
             name="md-person" 
@@ -38,7 +52,10 @@ export default class Login extends React.Component {
             />  
            <TextInput
               style={styles.input}
+              returnKeyType='next'
               value={this.state.username}
+              placeholder="Username"
+              placeholderTextColor='#829c96'
               onChangeText={(text) => this.setState({username: text})}
             />         
         </View>
@@ -52,12 +69,27 @@ export default class Login extends React.Component {
             />  
            <TextInput
               style={styles.input}
+              defaultValue={'Enter your password'}
               value={this.state.password}
-              onChangeText={(text) => this.setState({password: text})}
+              secureTextEntry={true}
+              placeholder="Password"
+              placeholderTextColor='#829c96'
+              onChangeText={(text) => this.handleInput(text)}
             />
         </View>         
         <TouchableOpacity
           style={styles.button}
+          style={{
+            borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
+            borderRadius: 30,
+            borderWidth: 3,
+            padding: 30,
+            width: 160,
+            height: 40,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          activeOpacity={buttonEnabled ? 0.25 : 1}
         >
         <Text style={styles.buttonText}> Login </Text> 
         </TouchableOpacity>
@@ -71,7 +103,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: 'center',
-   
   },
 
   input: {
@@ -82,17 +113,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#053A2E',
     fontWeight: 'bold'
-  },
-
-  button: {
-    padding: 30,
-    width: 160,
-    height: 40,
-    borderRadius: 30,
-    borderWidth: 2,
-    borderColor: '#18EBBB',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
 
   inputContainer: {
@@ -107,7 +127,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 100,
+    marginTop: 80,
   },
 
   icon: {

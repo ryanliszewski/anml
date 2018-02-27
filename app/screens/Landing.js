@@ -15,14 +15,16 @@ export default class LandingScreen extends Component {
 
     this.state = {
       currentScreen: null
+      
     };
+    console.log(this.state.currentScreen);
   }
 
   onPress = (type) => {
 
   }
-
   renderContent() {
+    console.log(this.state.currentScreen);
     const { currentScreen } = this.state;
 
     if (currentScreen === 'login') {
@@ -51,7 +53,7 @@ export default class LandingScreen extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.button}
-              onPress={() => this.setState({currentScreen: 'null'})}
+              onPress={() => this.setState({currentScreen: 'register'})}
               underlayColor='#04DEAD'
             >
               <Text style={styles.buttonText}> Sign Up </Text>

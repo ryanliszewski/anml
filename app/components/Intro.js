@@ -14,7 +14,7 @@ export default class Intro extends Component {
         />
 
         <Text style={styles.title}> anml. </Text> 
-        <Text style={styles.subTitle}> A place where animals do the walking.</Text> 
+        <Text style={styles.subTitle}> A place where animals can be anmls.</Text> 
       </View>
     );
   }
@@ -36,14 +36,13 @@ const styles = StyleSheet.create({
   subTitle: {
     paddingTop: 10,
     fontFamily: 'Futura',
-    fontSize: 16,
+    fontSize: 18,
     color: '#f5f3ce'
   },
 
   logo:{
     width: 200,
     height: 200,
-    
   },
 
 });
