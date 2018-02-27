@@ -14,9 +14,15 @@ export default class Login extends React.Component {
     console.log(SOCIAL_FEED_MOCK_DATA)
   }
 
-  _renderItem({item}){
-    
-    <View style={styles.post}>
+  _renderItem = ({item}) => {
+    return(
+    <View 
+    style={styles.post}
+    shadowColor='#829c96'
+    shadowRadius='3'
+    shadowOffset={{width: 2, height: -2}}
+    shadowOpacity={0.75}
+    >
       <View style={styles.headerContainer}>
         
         <Image 
@@ -26,70 +32,48 @@ export default class Login extends React.Component {
             height: 30,
             borderRadius: 15,
           }}
-          />
+        />
         
         <Text> {item.name} </Text> 
       </View>
 
       <View style={styles.imageContainer}>
       <Image 
-          source={{uri: item.post}}
+          source={{uri: item.post['image']}}
           style={{
-            width: 200,
-            height: 200,
+            width: 400,
+            height: 400,
             borderRadius: 30,
           }}
       />
       </View> 
 
-      <View style={styles.labelsContainer}>
-        
+      <Text style={styles.caption}> {item.post["caption"]} </Text>
+      
+  
+        <View style={styles.labelsContainer}>
+          
       </View> 
     </View>
+    );
   }
 
   render() {
     return(
       <ScrollView style={styles.container}>
+        <LinearGradient
+        style={styles.container}
+        colors={['#FFEBB7','#fff9ea']}
+        start={{x: 0.0, y: 0.0}}
+        end={{x:1.0, y: 1.0}}
+        locations={[0.1,0.8]}
+        >
         <FlatList
           data={ SOCIAL_FEED_MOCK_DATA }
           style={styles.list}
-          renderItem={ ({item, seperator}) => (
-            <View style={styles.post}>
-            <View style={styles.headerContainer}>
-              
-              <Image 
-                source={{uri: item.image}}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 15,
-                }}
-                />
-              
-              <Text> {item.name} </Text> 
-            </View>
-      
-            <View style={styles.imageContainer}>
-            <Image 
-                source={{uri: item.post["image"]}}
-                style={{
-                  flex: 1,
-                  width: 400,
-                  height: 200,
-                  borderRadius: 30,
-                }}
-            />
-
-            <Text> {item.post["caption"]} </Text>
-            </View> 
-      
-            <View style={styles.labelsContainer}>
-              
-            </View> 
-          </View>
-          )}
-        />
+          renderItem={ ({item, seperator}) => this._renderItem({item, seperator})}
+          />
+        </LinearGradient>
       </ScrollView>
     );
   }
@@ -104,12 +88,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-
+    paddingLeft: 10,
+    paddingBottom: 5,
   },
 
-  post: {
-    flex: 1,
+  post: {   
     padding: 10,
+    
   },
 
   imageContainer: {
@@ -121,6 +106,12 @@ const styles = StyleSheet.create({
 
   list: {
     flexGrow: 1,
-  }
+  },
 
+  caption: {
+    paddingTop: 10,
+    paddingLeft: 10,
+    color: '#085947',
+    fontFamily: 'Futura'
+  }
 });
