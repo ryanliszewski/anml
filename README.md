@@ -10,7 +10,7 @@ This repo is the react native mobile app for anml.
 - They can **upload selfies** or **post their thoughts** for other pets to see.
 - They can also look at **other pets posts** and either **paw** (like) or **scratch** (dislike) it.
 
-### [Demo - Try it on Expo](https://exp.host/@monte9/daug-mobile)
+### [Demo - Try it on Expo](https://exp.host/@ryanliszewski/anml)
 
 ## Getting started
 
