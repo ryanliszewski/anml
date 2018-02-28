@@ -4,6 +4,8 @@ import {  Icon } from 'react-native-elements';
 import  {LinearGradient}  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
+import InputBottomBorder from '../components/Input';
+
 export default class Login extends React.Component { 
 
   constructor(props){
@@ -42,41 +44,24 @@ export default class Login extends React.Component {
 
       <Text style={styles.title}> anml. </Text> 
         <View style={styles.form}>
-
+          <View style={styles.inputContainer}>
+           <InputBottomBorder
+             securedText={false}
+             placeholder='Username'
+             iconName='ios-person-outline'
+             value={this.state.username}
+             onChangeText={(text) => this.setState({username: text})}
+            />
+          </View>
         <View style={styles.inputContainer}>
-          <Ionicons 
-            name="md-person" 
-            size={24} 
-            color='#FBFAE1'
-            style={styles.icon}
-            />  
-           <TextInput
-              style={styles.input}
-              returnKeyType='next'
-              value={this.state.username}
-              placeholder="Username"
-              placeholderTextColor='#829c96'
-              onChangeText={(text) => this.setState({username: text})}
-            />         
+
+          <InputBottomBorder
+            securedText={false}
+            placeholder='Password'
+            iconName='ios-lock-outline'
+          />
         </View>
 
-        <View style={styles.inputContainer}>
-          <Ionicons 
-            name="md-lock" 
-            size={24} 
-            color='#FBFAE1'
-            style={styles.icon}
-            />  
-           <TextInput
-              style={styles.input}
-              defaultValue={'Enter your password'}
-              value={this.state.password}
-              secureTextEntry={true}
-              placeholder="Password"
-              placeholderTextColor='#829c96'
-              onChangeText={(text) => this.handleInput(text)}
-            />
-        </View>         
         <TouchableOpacity
           style={{borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
           borderRadius: 30,
@@ -90,7 +75,7 @@ export default class Login extends React.Component {
         >
         <Text style={styles.buttonText}> Login </Text> 
         </TouchableOpacity>
-        </View>
+      </View>
       </LinearGradient> 
     );
   }
@@ -124,11 +109,7 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    borderBottomWidth: 1,
-    borderColor: '#F1EFB9',
-    marginBottom: 40,
+    paddingBottom: 20,
   },
 
   form: {
@@ -146,6 +127,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Futura',
     color: '#fff',
     fontSize: 24
+  },
+
+  input: {
   },
 
   title: {

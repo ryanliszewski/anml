@@ -3,12 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import LandingScreen from './app/screens/Landing';
 import Feed from './app/screens/Feed';
+import Login from './app/screens/Login';
 
 export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <LandingScreen/>
+        <Login/>
       </View>
     );
   }
