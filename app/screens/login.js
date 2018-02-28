@@ -78,17 +78,14 @@ export default class Login extends React.Component {
             />
         </View>         
         <TouchableOpacity
-          style={styles.button}
-          style={{
-            borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
-            borderRadius: 30,
-            borderWidth: 3,
-            padding: 30,
-            width: 160,
-            height: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+          style={{borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
+          borderRadius: 30,
+          borderWidth: 3,
+          padding: 30,
+          width: 160,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center'}}
           activeOpacity={buttonEnabled ? 0.25 : 1}
         >
         <Text style={styles.buttonText}> Login </Text> 
@@ -103,6 +100,17 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: 'center',
+  },
+
+  buttn: {
+   
+    borderRadius: 30,
+    borderWidth: 3,
+    padding: 30,
+    width: 160,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   input: {

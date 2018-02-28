@@ -96,8 +96,7 @@ export default class Register extends Component {
             />
         </View>         
         <TouchableOpacity
-          style={styles.button}
-          style={{
+           style={{
             borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
             borderRadius: 30,
             borderWidth: 3,
@@ -106,7 +105,8 @@ export default class Register extends Component {
             height: 40,
             alignItems: 'center',
             justifyContent: 'center',
-          }}
+
+           }}
           activeOpacity={buttonEnabled ? 0.25 : 1}
         >
         <Text style={styles.buttonText}> Login </Text> 
@@ -131,6 +131,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#053A2E',
     fontWeight: 'bold'
+  },
+
+  button: {
+    borderRadius: 30,
+    borderWidth: 3,
+    padding: 30,
+    width: 160,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   inputContainer: {

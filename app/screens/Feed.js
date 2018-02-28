@@ -47,14 +47,30 @@ export default class Login extends React.Component {
           }}
       />
       </View> 
-
-      <Text style={styles.caption}> {item.post["caption"]} </Text>
       
-  
-        <View style={styles.labelsContainer}>
-          
-      </View> 
+      <View style={styles.buttonsContainer}>
+          <Ionicons
+          name="ios-heart-outline"
+          size={40}
+          color='#085947'
+          />
+
+          <Ionicons
+          name="ios-chatbubbles-outline"
+          size={40}
+          color='#085947'
+          />
+
+          <Ionicons
+          name="ios-paper-plane-outline"
+          size={40}
+          color='#085947'
+          />
+      </View>  
+
+      <Text style={styles.caption}> {item.post["caption"]} </Text> 
     </View>
+    
     );
   }
 
@@ -95,6 +111,12 @@ const styles = StyleSheet.create({
   post: {   
     padding: 10,
     
+  },
+
+  buttonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingTop: 10,
   },
 
   imageContainer: {
