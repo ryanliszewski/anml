@@ -1,11 +1,12 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
 import {  Icon } from 'react-native-elements';
 import  {LinearGradient}  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/Button';
+import AlertCustom from '../components/Alert';
 
 export default class Login extends React.Component { 
 
@@ -15,9 +16,7 @@ export default class Login extends React.Component {
       username: '',
       password: '',
       enabled: false,
-      buttonEnabledBorder: ''
     }
-    this.handleInput = this.handleInput.bind(this)
   }
 
   handleInput(input){
@@ -32,45 +31,57 @@ export default class Login extends React.Component {
     }
   }
 
+  handlePress = () => {
+    const {enabled} = this.state;
+
+    if(enabled){
+      Alert.alert(
+        "test",
+        'this works ',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false })
+    }
+  }
+
   render(){
     const { enabled }  = this.state 
     
     return (
       <LinearGradient
-      style={styles.mainContainer}
-      colors={['#FFEBB7','#0E9577']}
-      start={{x: 0.0, y: 0.0}}
-      end={{x:1.0, y: 1.0}}
-      locations={[0.1,0.8]}
+        style={styles.mainContainer}
+        colors={['#FFEBB7','#0E9577']}
+        start={{x: 0.0, y: 0.0}}
+        end={{x:1.0, y: 1.0}}
+        locations={[0.1,0.8]}
       >
-
-      <Text style={styles.title}> anml. </Text> 
-        <View style={styles.form}>
-          
+        <Text style={styles.title}> anml. </Text> 
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+            <InputBottomBorder
+              securedText={false}
+              placeholder='Username'
+              iconName='ios-person-outline'
+              value={this.state.username}
+              onChangeText={(text) => this.setState({username: text})}
+              />
+            </View>
           <View style={styles.inputContainer}>
-           <InputBottomBorder
-             securedText={false}
-             placeholder='Username'
-             iconName='ios-person-outline'
-             value={this.state.username}
-             onChangeText={(text) => this.setState({username: text})}
+            <InputBottomBorder
+              securedText={true}
+              placeholder='Password'
+              iconName='ios-lock-outline'
+              value={this.state.password}
+              onChangeText={(text) => this.handleInput(text)}
             />
           </View>
-        <View style={styles.inputContainer}>
-          <InputBottomBorder
-            securedText={true}
-            placeholder='Password'
-            iconName='ios-lock-outline'
-            value={this.state.password}
-            onChangeText={(text) => this.handleInput(text)}
+          <ButtonOutline 
+            buttonEnabled={enabled}
+            title='Login'
+            onPress={this.handlePress}
           />
         </View>
-
-        <ButtonOutline 
-          buttonEnabled={enabled}
-          title='Login'
-        />
-      </View>
       </LinearGradient> 
     );
   }

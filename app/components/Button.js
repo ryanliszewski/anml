@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native
 import { Ionicons } from '@expo/vector-icons';
 import propTypes from 'prop-types';
 
-
 const ButtonOutline = (props) => {
   
 return (
@@ -17,6 +16,7 @@ return (
       alignItems: 'center',
       justifyContent: 'center'}}
       activeOpacity={props.buttonEnabled ? 0.25 : 1}
+      onPress={props.onPress}
     >
       <Text style={styles.buttonText}>{props.title}</Text> 
     </TouchableOpacity>
@@ -26,6 +26,7 @@ return (
 ButtonOutline.propTypes = {
   buttonEnabled: propTypes.bool.isRequired,
   title: propTypes.string.isRequired,
+  onPress: propTypes.func
 }
 
 const styles = StyleSheet.create({
