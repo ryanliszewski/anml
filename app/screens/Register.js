@@ -1,9 +1,11 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput, Button, TouchableOpacity } from 'react-native';
-import {  Icon } from 'react-native-elements';
+import { StyleSheet, Alert, View, Platform } from 'react-native';
 import  {LinearGradient}  from 'expo';
-import { Ionicons } from '@expo/vector-icons';
 
+//Components
+import InputBottomBorder from '../components/Input';
+import ButtonOutline from '../components/ButtonOutline';
+import Logo from '../components/Logo';
 
 export default class Register extends Component {
   
@@ -13,22 +15,28 @@ export default class Register extends Component {
       email: '',
       username: '',
       password: '',
-      buttonEnabled: false,
-      buttonEnabledBorder: ''
     }
-    this.handleInput = this.handleInput.bind(this)
   }
 
-  handleInput(input){
-    this.setState({password: input})
-    const {username, password } = this.state;
+  isEnabled = () => {
+    const {email, username, password} = this.state;
+    return email.length > 7 && username.length > 2 && password.length > 7;
+  }
 
-    if(username.length > 2 && password.length > 7 && email.length > 7){
-      this.setState({buttonEnabled: true})
-    } else {
-      this.setState({buttonEnabled: false})
+  handlePress = () => { 
+    const {username, enabled} = this.state
+
+    if(this.isEnabled()){
+      Alert.alert(
+        `Registration was successful`,
+        `Welcome to anml, ${username}`,
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+
+        { cancelable: false })
     }
-  } 
+  }
 
   render(){
     const { buttonEnabled }  = this.state 
@@ -41,76 +49,50 @@ export default class Register extends Component {
       end={{x:1.0, y: 1.0}}
       locations={[0.1,0.8]}
       >
-
-      <Text style={styles.title}> anml. </Text> 
-        <View style={styles.form}>
-
-        <View style={styles.inputContainer}>
-          <Ionicons 
-            name="md-mail" 
-            size={24} 
-            color='#FBFAE1'
-            style={styles.icon}
-            />  
-           <TextInput
-              style={styles.input}
-              returnKeyType='next'
-              value={this.state.email}
-              placeholder="Enter your email"
-              placeholderTextColor='#829c96'
-              onChangeText={(text) => this.setState({email: text})}
-            />         
-        </View>
-        <View style={styles.inputContainer}>
-          <Ionicons 
-            name="md-person" 
-            size={24} 
-            color='#FBFAE1'
-            style={styles.icon}
-            />  
-           <TextInput
-              style={styles.input}
-              returnKeyType='next'
-              value={this.state.username}
-              placeholder="Enter your Username"
-              placeholderTextColor='#829c96'
-              onChangeText={(text) => this.setState({username: text})}
-            />         
-        </View>
-
-        <View style={styles.inputContainer}>
-          <Ionicons 
-            name="md-lock" 
-            size={24} 
-            color='#FBFAE1'
-            style={styles.icon}
-            />  
-           <TextInput
-              style={styles.input}
-              defaultValue={'Enter your password'}
-              value={this.state.password}
-              secureTextEntry={true}
-              placeholder="Password" 
-              placeholderTextColor='#829c96'
-              onChangeText={(text) => this.handleInput(text)}
+       <View style={styles.logoContainer}>
+          <Logo 
+            width={150}
+            height={150}
             />
-        </View>         
-        <TouchableOpacity
-           style={{
-            borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
-            borderRadius: 30,
-            borderWidth: 3,
-            padding: 30,
-            width: 160,
-            height: 40,
-            alignItems: 'center',
-            justifyContent: 'center',
+        </View>
 
-           }}
-          activeOpacity={buttonEnabled ? 0.25 : 1}
-        >
-        <Text style={styles.buttonText}> Login </Text> 
-        </TouchableOpacity>
+        <View style={styles.form}>
+        <View style={styles.inputContainer}>
+        <InputBottomBorder
+              securedText={false}
+              placeholder='Enter your email'
+              iconName='md-mail'
+              value={this.state.email}
+              onChangeText={(text) => this.setState({email: text})}
+              keyType = 'next'
+              />       
+        </View>
+        <View style={styles.inputContainer}>
+          <InputBottomBorder
+              securedText={false}
+              placeholder='Enter your username'
+              iconName='ios-mail-outline'
+              value={this.state.username}
+              onChangeText={(text) => this.setState({username: text})}
+              keyType = 'next'
+              />   
+          </View>
+        <View style={styles.inputContainer}>
+          <InputBottomBorder
+              securedText={true}
+              placeholder='Enter your password'
+              iconName='md-lock'
+              value={this.state.password}
+              onChangeText={(text) => this.setState({password: text})}
+              keyType = 'go'
+              onSubmitEditing={() => this.handlePress()}
+              />       
+        </View>         
+        <ButtonOutline 
+            buttonEnabled={this.isEnabled()}
+            title='Login'
+            onPress={this.handlePress}
+          />
         </View>
       </LinearGradient> 
     );
@@ -123,15 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  input: {
-    width: 250,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    fontFamily: 'Futura',
-    fontSize: 16,
-    color: '#053A2E',
-    fontWeight: 'bold'
-  },
 
   button: {
     borderRadius: 30,
@@ -144,36 +117,17 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    borderBottomWidth: 2,
-    borderColor: '#F1EFB9',
-    marginBottom: 40,
+    paddingBottom: 20,
   },
 
   form: {
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 80,
+    marginTop: 40,
   },
 
-  icon: {
-    paddingLeft: 5,
-    paddingBottom: 5,
+  logoContainer: {
+    paddingTop: 60,
   },
-
-  buttonText: {
-    fontFamily: 'Futura',
-    color: '#fff',
-    fontSize: 24
-  },
-
-  title: {
-    paddingTop: 10,
-    fontFamily: 'Futura', 
-    fontSize: 36,
-    color: '#F1EFB9',
-    marginTop: 100,
-  }
 });

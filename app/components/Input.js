@@ -6,6 +6,10 @@ import propTypes from 'prop-types';
 
 const InputBottomBorder = (props) => {
 
+  focus = () => {
+    this.focus()
+  }
+
 return(  
   <View style={styles.inputContainer}>
     <Ionicons 
@@ -21,7 +25,12 @@ return(
         placeholder={props.placeholder}
         placeholderTextColor='#829c96'
         onChangeText={props.onChangeText}
-      />
+        allowFontScaling={true}
+        onChange={props.onChange}
+        returnKeyType={props.keyType}
+        onSubmitEditing={props.onSubmitEditing}
+        // focus={propTypes.focus && focus()}
+      />     
   </View>    
   );
 }
@@ -32,7 +41,12 @@ InputBottomBorder.propTypes = {
   iconName: propTypes.string.isRequired,
   value: propTypes.string,
   onChangeText: propTypes.func,  
+  onChange: propTypes.func,
+  keyType: propTypes.string,
+  onSubmitEditing: propTypes.func,
+  focus: propTypes.bool, 
 }
+
 
 const styles = StyleSheet.create({
   input: {
@@ -56,6 +70,5 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
 });
-
 
 export default InputBottomBorder;

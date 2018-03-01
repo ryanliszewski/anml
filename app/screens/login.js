@@ -17,38 +17,35 @@ export default class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      enabled: false,
+      focusPasswordInput: false,
     }
   }
 
-  handleInput(input){
-    this.setState({password: input})
-    const {username, password } = this.state;
-    console.log(username)
-
-    if(username.length > 2 && password.length > 7){
-      this.setState({enabled: true})
-    } else {
-      this.setState({enabled: false})
-    }
+  isEnabled = () => {
+    const {username, password} = this.state;
+    return username.length > 2 && password.length > 7;
   }
 
-  handlePress = () => {
+  handleNameInputSubmit() {
+    this.setState({focusPasswordInput: true})
+  }
+
+  handlePress = () => { 
     const {username, enabled} = this.state
 
-    if(enabled){
+    if(this.isEnabled()){
       Alert.alert(
         `Success`,
-        `Welcome to anml, ${username}`,
+        `You've logged in, ${username}`,
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ],
+
         { cancelable: false })
     }
   }
 
   render(){
-    const { enabled }  = this.state 
     
     return (
       <LinearGradient
@@ -73,6 +70,7 @@ export default class Login extends React.Component {
               iconName='ios-person-outline'
               value={this.state.username}
               onChangeText={(text) => this.setState({username: text})}
+              keyType = 'next'
               />
             </View>
           <View style={styles.inputContainer}>
@@ -81,11 +79,13 @@ export default class Login extends React.Component {
               placeholder='Password'
               iconName='ios-lock-outline'
               value={this.state.password}
-              onChangeText={(text) => this.handleInput(text)}
+              onChangeText={(text) => this.setState({password: text})}
+              keyType = 'go'
+              onSubmitEditing={() => this.handlePress()}
             />
-          </View>
+          </View> 
           <ButtonOutline 
-            buttonEnabled={enabled}
+            buttonEnabled={this.isEnabled()}
             title='Login'
             onPress={this.handlePress}
           />
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 60,
+    marginTop: 40,
   },
 
   title: {
