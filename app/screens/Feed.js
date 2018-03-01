@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform } from 'react-native';
 import {  Icon } from 'react-native-elements';
 import  { LinearGradient }  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,14 +7,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
 
 const ICON_NAMES_IOS = ['ios-heart-outline', 'ios-chatbubbles-outline', 'ios-paper-plane-outline'];
+//Complete with Platform
 const ICON_NAMES_MATERIAL = [];
 
 export default class Login extends React.Component { 
 
   constructor(props){
     super(props);
-
-    console.log(SOCIAL_FEED_MOCK_DATA)
   }
 
   _renderItem = ({item}) => {
@@ -27,7 +26,6 @@ export default class Login extends React.Component {
     shadowOpacity={0.75}
     >
       <View style={styles.headerContainer}>
-        
         <Image 
           source={{uri: item.image}}
           style={{
@@ -36,44 +34,47 @@ export default class Login extends React.Component {
             borderRadius: 15,
           }}
         />
-        
-        <Text> {item.name} </Text> 
+        <View style={styles.nameLocationContainer}>
+          <Text style={styles.nameText}> {item.name} </Text> 
+          <Text style={styles.locationText}> {item.location} </Text>
+        </View>
       </View>
-
       <View style={styles.imageContainer}>
-      <Image 
-          source={{uri: item.post['image']}}
-          style={{
-            width: 400,
-            height: 400,
-            borderRadius: 30,
-          }}
-      />
+        <Image 
+            source={{uri: item.post['image']}}
+            style={{
+              width: 400,
+              height: 400,
+              borderRadius: 60,
+            }}
+        />
       </View> 
-      
       <View style={styles.buttonsContainer}>
-          <Ionicons
-          name="ios-heart-outline"
-          size={40}
-          color='#085947'
-          />
+        <Ionicons
+        name="ios-heart-outline"
+        size={30}
+        color='#085947'
+        style={{paddingRight: 8}}
+        />
 
-          <Ionicons
-          name="ios-chatbubbles-outline"
-          size={40}
-          color='#085947'
-          />
+        <Ionicons
+        name="ios-chatbubbles-outline"
+        size={30}
+        color='#085947'
+        style={{paddingRight: 8}}
+        />
 
-          <Ionicons
-          name="ios-paper-plane-outline"
-          size={40}
-          color='#085947'
-          />
+        <Ionicons
+        name="ios-paper-plane-outline"
+        size={30}
+        color='#085947'
+        />
       </View>  
-
-      <Text style={styles.caption}> {item.post["caption"]} </Text> 
+      <View style={styles.captionContainer}>   
+        <Text style={styles.captionText}> {item.post["caption"]} </Text> 
+        <Text style={styles.timeText}> {item.post["date"]} </Text>
+      </View>
     </View>
-    
     );
   }
 
@@ -103,40 +104,67 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 
+  nameLocationContainer: {
+    paddingLeft: 5,
+  },
+
+  nameText: {
+    color: '#053e31',
+    fontFamily: 'Futura',
+    fontSize: 14,
+  },
+
+  locationText: {
+    color: '#528a7e',
+    fontFamily: 'Futura',
+    fontSize: 12,
+  },
+
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingLeft: 10,
+    paddingLeft: 5,
     paddingBottom: 5,
   },
 
   post: {   
     padding: 10,
-    
   },
 
   buttonsContainer: {
-    flex: 1,
     flexDirection: 'row',
     paddingTop: 10,
+    paddingLeft: 5,
   },
 
   imageContainer: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-      
+    alignItems: 'center',  
   },
 
   list: {
     flexGrow: 1,
   },
 
-  caption: {
-    paddingTop: 10,
-    paddingLeft: 10,
-    color: '#085947',
-    fontFamily: 'Futura'
+  captionContainer: {
+    paddingBottom: 5,
+    paddingLeft: 5,
+  },
+
+  captionText: {
+    paddingTop: 5,
+    color: '#053e31',
+    fontFamily: 'Futura',
+    fontSize: 14,
+  },
+
+  timeText: {
+    fontFamily: 'Futura',
+    paddingTop: 5,
+    color: '#528a7e',
+    fontSize: 10,
   }
+
 });
