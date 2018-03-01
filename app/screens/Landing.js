@@ -7,17 +7,16 @@ import LoginScreen from './Login';
 import RegisterScreen from './Register';
 
 //Components
-import Intro from '../components/Intro';
+import Logo from '../components/Logo';
+import Name from '../components/Name';
 
-export default class LandingScreen extends Component {
+export default class Landing extends Component {
   constructor(props){
     super(props);
 
     this.state = {
       currentScreen: null
-      
     };
-    console.log(this.state.currentScreen);
   }
 
   onPress = (type) => {
@@ -41,8 +40,13 @@ export default class LandingScreen extends Component {
             end={{x:1.0, y: 1.0}}
             locations={[0.1,0.8]}
           >
-              <Intro/>
+              <Logo
+                width={200}
+                height={200}
+              />
+              <Name/>
         </LinearGradient>
+          
           <View style={styles.buttonContainer}>
             <TouchableHighlight
               style={styles.button}
@@ -102,8 +106,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
   },
-
-  introContainer: {
-
-  }
 });

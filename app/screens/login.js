@@ -1,12 +1,14 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, TextInput, Button, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import {  Icon } from 'react-native-elements';
 import  {LinearGradient}  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
+//Components
 import InputBottomBorder from '../components/Input';
-import ButtonOutline from '../components/Button';
+import ButtonOutline from '../components/ButtonOutline';
 import AlertCustom from '../components/Alert';
+import Logo from '../components/Logo';
 
 export default class Login extends React.Component { 
 
@@ -32,12 +34,12 @@ export default class Login extends React.Component {
   }
 
   handlePress = () => {
-    const {enabled} = this.state;
+    const {username, enabled} = this.state
 
     if(enabled){
       Alert.alert(
-        "test",
-        'this works ',
+        `Success`,
+        `Welcome to anml, ${username}`,
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
         ],
@@ -56,7 +58,13 @@ export default class Login extends React.Component {
         end={{x:1.0, y: 1.0}}
         locations={[0.1,0.8]}
       >
-        <Text style={styles.title}> anml. </Text> 
+        <View style={styles.logoContainer}>
+          <Logo 
+            width={150}
+            height={150}
+            />
+        </View>
+
           <View style={styles.form}>
             <View style={styles.inputContainer}>
             <InputBottomBorder
@@ -93,6 +101,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  logoContainer: {
+    paddingTop: 60,
+  },
+
   inputContainer: {
     paddingBottom: 20,
   },
@@ -101,7 +113,7 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 80,
+    marginTop: 60,
   },
 
   title: {

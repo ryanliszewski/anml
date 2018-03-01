@@ -6,6 +6,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
 
+const ICON_NAMES_IOS = ['ios-heart-outline', 'ios-chatbubbles-outline', 'ios-paper-plane-outline'];
+const ICON_NAMES_MATERIAL = [];
+
 export default class Login extends React.Component { 
 
   constructor(props){
