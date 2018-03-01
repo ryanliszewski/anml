@@ -1,10 +1,11 @@
 import React, { Component }  from 'react';
 import { StyleSheet, Text, View, TextInput} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 
-const InputBottomBorder = props => {
+const InputBottomBorder = (props) => {
+
 return(  
   <View style={styles.inputContainer}>
     <Ionicons 
@@ -22,15 +23,15 @@ return(
         onChangeText={props.onChangeText}
       />
   </View>    
-);
+  );
 }
 
-InputBottomBorder.PropTypes = {
-  securedText: PropTypes.bool.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  iconName: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  onChangeText: PropTypes.func
+InputBottomBorder.propTypes = {
+  securedText: propTypes.bool.isRequired,
+  placeholder: propTypes.string.isRequired,
+  iconName: propTypes.string.isRequired,
+  value: propTypes.string,
+  onChangeText: propTypes.func,  
 }
 
 const styles = StyleSheet.create({
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     paddingLeft: 10,
     fontFamily: 'Futura',
-    fontSize: 20,
+    fontSize: 18,
     color: '#053A2E',
     fontWeight: 'bold'
   },

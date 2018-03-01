@@ -5,6 +5,7 @@ import  {LinearGradient}  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 import InputBottomBorder from '../components/Input';
+import ButtonOutline from '../components/Button';
 
 export default class Login extends React.Component { 
 
@@ -13,7 +14,7 @@ export default class Login extends React.Component {
     this.state = {
       username: '',
       password: '',
-      buttonEnabled: false,
+      enabled: false,
       buttonEnabledBorder: ''
     }
     this.handleInput = this.handleInput.bind(this)
@@ -22,16 +23,17 @@ export default class Login extends React.Component {
   handleInput(input){
     this.setState({password: input})
     const {username, password } = this.state;
+    console.log(username)
 
     if(username.length > 2 && password.length > 7){
-      this.setState({buttonEnabled: true})
+      this.setState({enabled: true})
     } else {
-      this.setState({buttonEnabled: false})
+      this.setState({enabled: false})
     }
   }
 
   render(){
-    const { buttonEnabled }  = this.state 
+    const { enabled }  = this.state 
     
     return (
       <LinearGradient
@@ -44,6 +46,7 @@ export default class Login extends React.Component {
 
       <Text style={styles.title}> anml. </Text> 
         <View style={styles.form}>
+          
           <View style={styles.inputContainer}>
            <InputBottomBorder
              securedText={false}
@@ -54,27 +57,19 @@ export default class Login extends React.Component {
             />
           </View>
         <View style={styles.inputContainer}>
-
           <InputBottomBorder
-            securedText={false}
+            securedText={true}
             placeholder='Password'
             iconName='ios-lock-outline'
+            value={this.state.password}
+            onChangeText={(text) => this.handleInput(text)}
           />
         </View>
 
-        <TouchableOpacity
-          style={{borderColor: buttonEnabled ? '#18ebbb': '#eb1848',
-          borderRadius: 30,
-          borderWidth: 3,
-          padding: 30,
-          width: 160,
-          height: 40,
-          alignItems: 'center',
-          justifyContent: 'center'}}
-          activeOpacity={buttonEnabled ? 0.25 : 1}
-        >
-        <Text style={styles.buttonText}> Login </Text> 
-        </TouchableOpacity>
+        <ButtonOutline 
+          buttonEnabled={enabled}
+          title='Login'
+        />
       </View>
       </LinearGradient> 
     );
@@ -87,27 +82,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  buttn: {
-   
-    borderRadius: 30,
-    borderWidth: 3,
-    padding: 30,
-    width: 160,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  input: {
-    width: 250,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    fontFamily: 'Futura',
-    fontSize: 16,
-    color: '#053A2E',
-    fontWeight: 'bold'
-  },
-
   inputContainer: {
     paddingBottom: 20,
   },
@@ -117,19 +91,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 80,
-  },
-
-  icon: {
-    paddingLeft: 5,
-  },
-
-  buttonText: {
-    fontFamily: 'Futura',
-    color: '#fff',
-    fontSize: 24
-  },
-
-  input: {
   },
 
   title: {
