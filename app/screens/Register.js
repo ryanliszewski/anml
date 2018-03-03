@@ -2,6 +2,9 @@ import React, { Component }  from 'react';
 import { StyleSheet, Alert, View, Platform } from 'react-native';
 import  {LinearGradient}  from 'expo';
 
+//Screens 
+import Feed from './Feed.js'
+
 //Components
 import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/ButtonOutline';
@@ -15,6 +18,7 @@ export default class Register extends Component {
       email: '',
       username: '',
       password: '',
+      screen: null,
     }
   }
 
@@ -31,73 +35,83 @@ export default class Register extends Component {
         `Registration was successful`,
         `Welcome to anml, ${username}`,
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          {text: 'OK', onPress: () => this.setState({screen: 'feed'})},
         ],
 
         { cancelable: false })
     }
   }
 
-  render(){
-    const { buttonEnabled }  = this.state 
+  renderContent(){
+    const { buttonEnabled, screen }  = this.state ;
     
-    return (
-      <LinearGradient
-      style={styles.mainContainer}
-      colors={['#FFEBB7','#0E9577']}
-      start={{x: 0.0, y: 0.0}}
-      end={{x:1.0, y: 1.0}}
-      locations={[0.1,0.8]}
-      >
-       <View style={styles.logoContainer}>
-          <Logo 
-            width={150}
-            height={150}
-            />
-        </View>
-
-        <View style={styles.form}>
-        <View style={styles.inputContainer}>
-        <InputBottomBorder
-              securedText={false}
-              placeholder='Enter your email'
-              iconName='md-mail'
-              value={this.state.email}
-              onChangeText={(text) => this.setState({email: text})}
-              keyType = 'next'
-              />       
-        </View>
-        <View style={styles.inputContainer}>
-          <InputBottomBorder
-              securedText={false}
-              placeholder='Enter your username'
-              iconName='ios-mail-outline'
-              value={this.state.username}
-              onChangeText={(text) => this.setState({username: text})}
-              keyType = 'next'
-              />   
+    if(screen === 'feed'){
+      return <Feed/> 
+    } else {
+      return (
+        <LinearGradient
+        style={styles.mainContainer}
+        colors={['#FFEBB7','#0E9577']}
+        start={{x: 0.0, y: 0.0}}
+        end={{x:1.0, y: 1.0}}
+        locations={[0.1,0.8]}
+        >
+         <View style={styles.logoContainer}>
+            <Logo 
+              width={150}
+              height={150}
+              />
           </View>
-        <View style={styles.inputContainer}>
+  
+          <View style={styles.form}>
+          <View style={styles.inputContainer}>
           <InputBottomBorder
-              securedText={true}
-              placeholder='Enter your password'
-              iconName='md-lock'
-              value={this.state.password}
-              onChangeText={(text) => this.setState({password: text})}
-              keyType = 'go'
-              onSubmitEditing={() => this.handlePress()}
-              />       
-        </View>         
-        <ButtonOutline 
-            buttonEnabled={this.isEnabled()}
-            title='Login'
-            onPress={this.handlePress}
-            height={40}
-            width={160}
-            borderRadius={40}
-          />
-        </View>
-      </LinearGradient> 
+                securedText={false}
+                placeholder='Enter your email'
+                iconName='ios-mail-outline'
+                value={this.state.email}
+                onChangeText={(text) => this.setState({email: text})}
+                keyType = 'next'
+                />       
+          </View>
+          <View style={styles.inputContainer}>
+            <InputBottomBorder
+                securedText={false}
+                placeholder='Enter your username'
+                iconName='ios-person-outline'
+                value={this.state.username}
+                onChangeText={(text) => this.setState({username: text})}
+                keyType = 'next'
+                />   
+            </View>
+          <View style={styles.inputContainer}>
+            <InputBottomBorder
+                securedText={true}
+                placeholder='Enter your password'
+                iconName='ios-lock-outline'
+                value={this.state.password}
+                onChangeText={(text) => this.setState({password: text})}
+                keyType = 'go'
+                onSubmitEditing={() => this.handlePress()}
+                />       
+          </View>         
+          <ButtonOutline 
+              buttonEnabled={this.isEnabled()}
+              title='Login'
+              onPress={this.handlePress}
+              height={40}
+              width={160}
+              borderRadius={40}
+            />
+          </View>
+        </LinearGradient> 
+      );
+    }
+  }
+
+  render(){
+    return(
+      this.renderContent()
     );
   }
 }
@@ -106,17 +120,6 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     alignItems: 'center',
-  },
-
-
-  button: {
-    borderRadius: 30,
-    borderWidth: 3,
-    padding: 30,
-    width: 160,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 
   inputContainer: {

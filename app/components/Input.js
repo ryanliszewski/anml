@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Futura',
     fontSize: 18,
     color: '#053A2E',
-    fontWeight: 'bold'
+ 
   },
 
   inputContainer: {

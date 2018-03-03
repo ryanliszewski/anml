@@ -4,6 +4,9 @@ import {  Icon } from 'react-native-elements';
 import  {LinearGradient}  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
+//Screens
+import Feed from './Feed';
+
 //Components
 import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/ButtonOutline';
@@ -18,6 +21,7 @@ export default class Login extends React.Component {
       username: '',
       password: '',
       focusPasswordInput: false,
+      screen: null,
     }
   }
 
@@ -38,17 +42,21 @@ export default class Login extends React.Component {
         `Success`,
         `You've logged in, ${username}`,
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          {text: 'OK', onPress: () => this.setState({screen: 'feed'})},
         ],
 
         { cancelable: false })
     }
   }
 
-  render(){
-    
-    return (
-      <LinearGradient
+  renderContent(){
+    const { screen } = this.state;
+
+    if(screen === 'feed'){
+      return <Feed/> 
+    } else {
+      return(
+        <LinearGradient
         style={styles.mainContainer}
         colors={['#FFEBB7','#0E9577']}
         start={{x: 0.0, y: 0.0}}
@@ -94,6 +102,13 @@ export default class Login extends React.Component {
           />
         </View>
       </LinearGradient> 
+      );
+    }
+  }
+
+  render(){
+    return (
+      this.renderContent()
     );
   }
 }
