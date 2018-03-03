@@ -1,19 +1,35 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity} from 'react-native';
 import {  Icon } from 'react-native-elements';
 import  { LinearGradient }  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
+//Screens
+import Profile from './Profile';
 
+//Constant
+import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
 const ICON_NAMES_IOS = ['ios-heart-outline', 'ios-chatbubbles-outline', 'ios-paper-plane-outline'];
 //Complete with Platform
 const ICON_NAMES_MATERIAL = [];
+
 
 export default class Login extends React.Component { 
 
   constructor(props){
     super(props);
+
+    this.state = {
+      profile: null, 
+      screen: null 
+    }
+  }
+
+  renderProfile = (profile) => {
+    this.setState({
+      profile: profile,
+      screen: 'profile'
+    })
   }
 
   _renderItem = ({item}) => {
@@ -25,20 +41,25 @@ export default class Login extends React.Component {
     shadowOffset={{width: 2, height: -2}}
     shadowOpacity={0.75}
     >
-      <View style={styles.headerContainer}>
-        <Image 
-          source={{uri: item.image}}
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
-          }}
-        />
-        <View style={styles.nameLocationContainer}>
-          <Text style={styles.nameText}> {item.name} </Text> 
-          <Text style={styles.locationText}> {item.location} </Text>
+
+      <TouchableOpacity
+        onPress={() => this.renderProfile(item)}
+      >
+        <View style={styles.headerContainer}>
+          <Image 
+            source={{uri: item.image}}
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+            }}
+          />
+          <View style={styles.nameLocationContainer}>
+            <Text style={styles.nameText}> {item.name} </Text> 
+            <Text style={styles.locationText}> {item.location} </Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
       <View style={styles.imageContainer}>
         <Image 
             source={{uri: item.post['image']}}
@@ -51,7 +72,7 @@ export default class Login extends React.Component {
       </View> 
       <View style={styles.buttonsContainer}>
         <Ionicons
-        name="ios-heart-outline"
+        name= "ios-heart-outline"
         size={30}
         color='#085947'
         style={{paddingRight: 8}}
@@ -78,30 +99,48 @@ export default class Login extends React.Component {
     );
   }
 
+
+  renderContent(){
+    const { screen, profile } = this.state; 
+
+    if(screen === 'profile') {
+      return <Profile profile={profile}/> 
+    } else {
+      return(
+        <ScrollView style={styles.scroll}>
+          <LinearGradient
+          style={styles.container}
+          colors={['#FFEBB7','#fff9ea']}
+          start={{x: 0.0, y: 0.0}}
+          end={{x:1.0, y: 1.0}}
+          locations={[0.1,0.8]}
+          >
+          <FlatList
+            data={ SOCIAL_FEED_MOCK_DATA }
+            style={styles.list}
+            renderItem={ ({item, seperator}) => this._renderItem({item, seperator})}
+            />
+          </LinearGradient>
+        </ScrollView>
+      );
+    }
+  }
+
   render() {
     return(
-      <ScrollView style={styles.container}>
-        <LinearGradient
-        style={styles.container}
-        colors={['#FFEBB7','#fff9ea']}
-        start={{x: 0.0, y: 0.0}}
-        end={{x:1.0, y: 1.0}}
-        locations={[0.1,0.8]}
-        >
-        <FlatList
-          data={ SOCIAL_FEED_MOCK_DATA }
-          style={styles.list}
-          renderItem={ ({item, seperator}) => this._renderItem({item, seperator})}
-          />
-        </LinearGradient>
-      </ScrollView>
+     this.renderContent()
     );
   }
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+  },
+
+  scroll: {
+    paddingTop: 30,
   },
 
   nameLocationContainer: {

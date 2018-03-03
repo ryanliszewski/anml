@@ -5,6 +5,8 @@ import  {LinearGradient}   from 'expo';
 //Screens
 import LoginScreen from './Login';
 import RegisterScreen from './Register';
+import Feed from './Feed';
+import Profile from './Profile';
 
 //Components
 import Logo from '../components/Logo';
@@ -19,17 +21,18 @@ export default class Landing extends Component {
     };
   }
 
-  onPress = (type) => {
-
-  }
   renderContent() {
     console.log(this.state.currentScreen);
     const { currentScreen } = this.state;
+    const { profile } = this.props;
 
     if (currentScreen === 'login') {
       return <LoginScreen/>
     } else if (currentScreen === 'register'){
       return <RegisterScreen/>
+    } else if (currentScreen === 'feed') {
+      return <Feed/>
+    
     } else {
       return (
         <View style={styles.mainContainer}>
@@ -46,7 +49,6 @@ export default class Landing extends Component {
               />
               <Name/>
         </LinearGradient>
-          
           <View style={styles.buttonContainer}>
             <TouchableHighlight
               style={styles.button}

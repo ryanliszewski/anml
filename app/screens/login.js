@@ -88,6 +88,9 @@ export default class Login extends React.Component {
             buttonEnabled={this.isEnabled()}
             title='Login'
             onPress={this.handlePress}
+            width={160}
+            height={40}
+            borderRadius={40}
           />
         </View>
       </LinearGradient> 

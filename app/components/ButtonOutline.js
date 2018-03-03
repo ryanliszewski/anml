@@ -8,13 +8,13 @@ const ButtonOutline = (props) => {
 return (
   <TouchableOpacity
       style={{borderColor: props.buttonEnabled ? '#18ebbb': '#eb1848',
-      borderRadius: 30,
+      borderRadius: props.borderRadius,
       borderWidth: 3,
-      padding: 30,
-      width: 160,
-      height: 40,
+      width: props.width,
+      height: props.height,
       alignItems: 'center',
-      justifyContent: 'center'}}
+      justifyContent: 'center'
+      }}  
       activeOpacity={props.buttonEnabled ? 0.25 : 1}
       onPress={props.onPress}
     >
@@ -26,14 +26,17 @@ return (
 ButtonOutline.propTypes = {
   buttonEnabled: propTypes.bool.isRequired,
   title: propTypes.string.isRequired,
-  onPress: propTypes.func
+  onPress: propTypes.func,
+  width: propTypes.number.isRequired,
+  height: propTypes.number.isRequired,
+  borderRadius: propTypes.number,
 }
 
 const styles = StyleSheet.create({
   buttonText: {
     fontFamily: 'Futura',
     color: '#fff',
-    fontSize: 24
+    fontSize: 20
   },
 });
 

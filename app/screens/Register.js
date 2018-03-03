@@ -92,6 +92,9 @@ export default class Register extends Component {
             buttonEnabled={this.isEnabled()}
             title='Login'
             onPress={this.handlePress}
+            height={40}
+            width={160}
+            borderRadius={40}
           />
         </View>
       </LinearGradient> 
