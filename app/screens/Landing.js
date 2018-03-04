@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import  {LinearGradient}   from 'expo';
+import Carousel from 'react-native-snap-carousel';
 
 //Screens
 import LoginScreen from './Login';
@@ -19,6 +20,10 @@ export default class Landing extends Component {
     this.state = {
       currentScreen: null
     };
+  }
+
+  _renderItem = ({item, index}) => {
+    
   }
 
   renderContent() {
