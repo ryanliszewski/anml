@@ -133,12 +133,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 40,
   },
-
-  title: {
-    paddingTop: 10,
-    fontFamily: 'Futura', 
-    fontSize: 36,
-    color: '#F1EFB9',
-    marginTop: 100,
-  }
 });
