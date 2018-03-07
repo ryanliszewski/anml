@@ -5,7 +5,7 @@ import  { LinearGradient }  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 //Screens
-import Profile from './Profile';
+// import Profile from './Profile';
 
 //Constant
 import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
@@ -36,10 +36,10 @@ export default class Login extends React.Component {
     return(
     <View 
     style={styles.post}
-    shadowColor='#829c96'
-    shadowRadius='3'
-    shadowOffset={{width: 2, height: -2}}
-    shadowOpacity={0.75}
+    // shadowColor='#829c96'
+    // shadowRadius='3'
+    // shadowOffset={{width: 2, height: -2}}
+    // shadowOpacity={0.75}
     >
 
       <TouchableOpacity
@@ -62,7 +62,7 @@ export default class Login extends React.Component {
       </TouchableOpacity>
       <View style={styles.imageContainer}>
         <Image 
-            source={{uri: item.post['image']}}
+            source={{uri: item.post["image"]}}
             style={{
               width: 400,
               height: 400,
@@ -70,7 +70,7 @@ export default class Login extends React.Component {
             }}
         />
       </View> 
-      <View style={styles.buttonsContainer}>
+      {/* <View style={styles.buttonsContainer}>
         <Ionicons
         name= "ios-heart-outline"
         size={30}
@@ -90,7 +90,7 @@ export default class Login extends React.Component {
         size={30}
         color='#085947'
         />
-      </View>  
+      </View>   */}
       <View style={styles.captionContainer}>   
         <Text style={styles.captionText}> {item.post["caption"]} </Text> 
         <Text style={styles.timeText}> {item.post["date"]} </Text>
@@ -104,7 +104,7 @@ export default class Login extends React.Component {
     const { screen, profile } = this.state; 
 
     if(screen === 'profile') {
-      return <Profile profile={profile}/> 
+      // return <Profile profile={profile}/> 
     } else {
       return(
         <ScrollView style={styles.scroll}>
@@ -118,7 +118,7 @@ export default class Login extends React.Component {
           <FlatList
             data={ SOCIAL_FEED_MOCK_DATA }
             style={styles.list}
-            renderItem={ ({item, seperator}) => this._renderItem({item, seperator})}
+            renderItem={ ({item}) => this._renderItem({item})}
             />
           </LinearGradient>
         </ScrollView>
@@ -149,13 +149,13 @@ const styles = StyleSheet.create({
 
   nameText: {
     color: '#053e31',
-    fontFamily: 'Futura',
+    // fontFamily: Platform.OS === 'ios' ? 'futura' : '',
     fontSize: 14,
   },
 
   locationText: {
     color: '#528a7e',
-    fontFamily: 'Futura',
+    // fontFamily: Platform.OS === 'ios' ? 'futura' : '',
     fontSize: 12,
   },
 
@@ -195,12 +195,12 @@ const styles = StyleSheet.create({
   captionText: {
     paddingTop: 5,
     color: '#053e31',
-    fontFamily: 'Futura',
+    // fontFamily: Platform.OS === 'ios' ? 'futura' : '',
     fontSize: 14,
   },
 
   timeText: {
-    fontFamily: 'Futura',
+    // fontFamily: Platform.OS === 'ios' ? 'futura' : '',
     paddingTop: 5,
     color: '#528a7e',
     fontSize: 10,

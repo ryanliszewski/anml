@@ -1,7 +1,7 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import  {LinearGradient}   from 'expo';
-import Carousel from 'react-native-snap-carousel';
+import { LinearGradient } from 'expo';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 //Screens
 import LoginScreen from './Login';
@@ -13,17 +13,42 @@ import Profile from './Profile';
 import Logo from '../components/Logo';
 import Name from '../components/Name';
 
+//Constants
+import LANDING_SCREEN_CAROUSEL_DATA from '../constants/LANDING_SCREEN_CAROUSEL_DATA'
+
 export default class Landing extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
-      currentScreen: null
+      currentScreen: null,
+      activeSlide: 0
+
     };
   }
 
-  _renderItem = ({item, index}) => {
-    
+  get pagination() {
+    const { activeSlide } = this.state;
+    return (
+      <Pagination
+        dotsLength={4}
+        activeDockIndex={activeSlide}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)'
+        }}
+
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+      />
+    );
+  }
+
+  _renderItem = ({ item, index }) => {
+
   }
 
   renderContent() {
@@ -32,51 +57,59 @@ export default class Landing extends Component {
     const { profile } = this.props;
 
     if (currentScreen === 'login') {
-      return <LoginScreen/>
-    } else if (currentScreen === 'register'){
-      return <RegisterScreen/>
+      return <LoginScreen />
+    } else if (currentScreen === 'register') {
+      return <RegisterScreen />
     } else if (currentScreen === 'feed') {
-      return <Feed/>
-    
+      return <Feed />
+
     } else {
       return (
         <View style={styles.mainContainer}>
           <LinearGradient
             style={styles.landingContainer}
-            colors={['#FFEBB7','#0E9577']}
-            start={{x: 0.0, y: 0.0}}
-            end={{x:1.0, y: 1.0}}
-            locations={[0.1,0.8]}
+            colors={['#FFEBB7', '#0E9577']}
+            start={{ x: 0.0, y: 0.0 }}
+            end={{ x: 1.0, y: 1.0 }}
+            locations={[0.1, 0.8]}
           >
-              <Logo
-                width={200}
-                height={200}
-              />
-              <Name/>
-        </LinearGradient>
+            <Logo
+              width={200}
+              height={200}
+            />
+            <Name />
+          </LinearGradient>
+
+          <Carousel
+            ref={(c) => { this._carousel = c; }}
+            data={LANDING_SCREEN_CAROUSEL_DATA}
+            onSnapToItem={(index) => this.setState({ activeSlide: index })}
+          />
+          {this.pagination}
+
           <View style={styles.buttonContainer}>
             <TouchableHighlight
               style={styles.button}
-              onPress={() => this.setState({currentScreen: 'login'})}
+              onPress={() => this.setState({ currentScreen: 'login' })}
               underlayColor='#04DEAD'
             >
               <Text style={styles.buttonText}> Login </Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={styles.button}
-              onPress={() => this.setState({currentScreen: 'register'})}
+              onPress={() => this.setState({ currentScreen: 'register' })}
               underlayColor='#04DEAD'
             >
               <Text style={styles.buttonText}> Sign Up </Text>
             </TouchableHighlight>
-          </View> 
-        </View> 
+          </View>
+        </View>
       );
     }
   }
-  
+
   render() {
-    return(
+    return (
       this.renderContent()
     );
   }
@@ -96,7 +129,7 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    height: 70, 
+    height: 70,
     flexDirection: 'row',
     backgroundColor: '#0E9577'
 
@@ -104,8 +137,8 @@ const styles = StyleSheet.create({
 
   button: {
     flex: 1,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   buttonText: {

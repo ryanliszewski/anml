@@ -53,9 +53,11 @@ const styles = StyleSheet.create({
     width: 250,
     paddingBottom: 5,
     paddingLeft: 10,
-    fontFamily: 'Futura',
-    fontSize: 18,
+    // fontFamily: 'Futura',
+    fontSize: 20,
     color: '#053A2E',
+    borderBottomWidth: 0,
+    borderColor: 'transparent',
  
   },
 

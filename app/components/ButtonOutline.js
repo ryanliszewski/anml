@@ -34,7 +34,7 @@ ButtonOutline.propTypes = {
 
 const styles = StyleSheet.create({
   buttonText: {
-    fontFamily: 'Futura',
+    // fontFamily: 'Futura',
     color: '#fff',
     fontSize: 20
   },

@@ -98,10 +98,16 @@ export default class Feed2 extends Component {
       return <Profile profile={profile}/>
     } else {
       return(
+        //Scrolls 
         <ScrollView style={styles.container}>
+          
           <FlatList 
+
             data={SOCIAL_FEED_MOCK_DATA}
+
             style={styles.item}
+
+            
             renderItem={({item, seperator}) => this._renderItem({item, seperator})}
           />
         </ScrollView>
@@ -117,8 +123,8 @@ export default class Feed2 extends Component {
 }
 
 const styles = StyleSheet.create({
-
   container: {
+    //Scroll
     flexGrow: 1,
   },
 

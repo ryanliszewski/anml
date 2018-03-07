@@ -46,6 +46,7 @@ export default class Feed2 extends Component {
           }}
       />
 
+
       <View style={styles.headerContainer}>
         <Image 
          source={{uri: profile.image}}
@@ -56,6 +57,7 @@ export default class Feed2 extends Component {
            marginTop: -30,
            marginLeft: 5,
          }}
+
         />
         <View style={styles.labelButtonContainer}> 
 
@@ -113,6 +115,7 @@ const styles = StyleSheet.create({
 
   headerContainer: {
     width: '100%',
+    marginTop: -30,
     flexDirection: 'row',
     backgroundColor: '#FFEBB7',  
   },
