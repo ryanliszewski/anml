@@ -4,16 +4,13 @@ import {  Icon } from 'react-native-elements';
 import  {LinearGradient}  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-//Screens
-import Feed from './Feed';
-
 //Components
 import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/ButtonOutline';
 import AlertCustom from '../components/Alert';
 import Logo from '../components/Logo';
 
-export default class LoginScreen extends React.Component { 
+export default class Login extends React.Component { 
 
   constructor(props){
     super(props);
@@ -31,18 +28,20 @@ export default class LoginScreen extends React.Component {
   }
 
   handleNameInputSubmit() {
+  
     this.setState({focusPasswordInput: true});
   }
 
   handlePress = () => { 
     const {username, enabled} = this.state
+    const { navigation } = this.props.navigation
 
     if(this.isEnabled()){
       Alert.alert(
         `Success`,
         `You've logged in, ${username}`,
         [
-          {text: 'OK', onPress: () => this.setState({screen: 'feed'})},
+          {text: 'OK', onPress: () => Navigation('TabNavigator')},
         ],
 
         { cancelable: false })

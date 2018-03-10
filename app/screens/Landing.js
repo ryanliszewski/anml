@@ -3,13 +3,6 @@ import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import { LinearGradient, Font } from 'expo';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
-
-//Screens
-import LoginScreen from './LoginScreen';
-import RegisterScreen from './Register';
-import Feed from './Feed';
-import Profile from './Profile';
-
 //Components
 import Logo from '../components/Logo';
 import Name from '../components/Name';
@@ -18,13 +11,17 @@ import Name from '../components/Name';
 import LANDING_SCREEN_CAROUSEL_DATA from '../constants/LANDING_SCREEN_CAROUSEL_DATA'
 
 export default class Landing extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
-      currentScreen: null,
       activeSlide: 0,
       fontLoaded: false,
+
     };
   }
 
@@ -35,7 +32,6 @@ export default class Landing extends Component {
 
     this.setState({ fontLoaded: true });
   }
-
 
   get pagination() {
     const { activeSlide } = this.state;
@@ -62,104 +58,96 @@ export default class Landing extends Component {
   }
 
   renderContent() {
-    console.log(this.state.currentScreen);
-    const { currentScreen } = this.state;
-    const { profile } = this.props;
 
-    if (currentScreen === 'login') {
-      return <LoginScreen />
-    } else if (currentScreen === 'register') {
-      return <RegisterScreen />
-    } else if (currentScreen === 'feed') {
-      return <Feed />
+    const { navigate } = this.props.navigation;
 
-    } else {
-      return (
-        <View style={styles.mainContainer}>
-          <LinearGradient
-            style={styles.landingContainer}
-            colors={['#FFEBB7', '#0E9577']}
-            start={{ x: 0.0, y: 0.0 }}
-            end={{ x: 1.0, y: 1.0 }}
-            locations={[0.1, 0.8]}
-          >
-            <Logo
-              width={200}
-              height={200}
+
+    return (
+      <View style={styles.mainContainer}>
+        <LinearGradient
+          style={styles.landingContainer}
+          colors={['#FFEBB7', '#0E9577']}
+          start={{ x: 0.0, y: 0.0 }}
+          end={{ x: 1.0, y: 1.0 }}
+          locations={[0.1, 0.8]}
+        >
+          <Logo
+            width={200}
+            height={200}
+          />
+          {this.state.fontLoaded &&
+            <Name
+              font='open-sans-bold'
             />
-            {this.state.fontLoaded &&
-              <Name
-                font='open-sans-bold'
-              />
-            }
-          </LinearGradient>
-  
-          {/* TODO - Finish Carousel
+          }
+        </LinearGradient>
+
+        {/* TODO - Finish Carousel
           <Carousel
             ref={(c) => { this._carousel = c; }}
             data={LANDING_SCREEN_CAROUSEL_DATA}
             onSnapToItem={(index) => this.setState({ activeSlide: index })}
           />
           {this.pagination} */}
-          {this.state.fontLoaded &&
-            <View style={styles.buttonContainer}>
-              <TouchableHighlight
-                style={styles.button}
-                onPress={() => this.setState({ currentScreen: 'login' })}
-                underlayColor='#04DEAD'
-              >
-                <Text style={[styles.buttonText, {fontFamily: 'open-sans-bold'}]}> Login </Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.button}
-                onPress={() => this.setState({ currentScreen: 'register' })}
-                underlayColor='#04DEAD'
-              >
-                <Text style={[styles.buttonText, {fontFamily: 'open-sans-bold'}]}> Sign Up </Text>
-              </TouchableHighlight>
-            </View>
-          }
+        {this.state.fontLoaded &&
+          <View style={styles.buttonContainer}>
+            <TouchableHighlight
+              style={styles.button}
+              onPress={() => navigate('Login')}
+              underlayColor='#04DEAD'
+            >
+              <Text style={[styles.buttonText, { fontFamily: 'open-sans-bold' }]}> Login </Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.button}
+              onPress={() => navigate('Register')}
+              underlayColor='#04DEAD'
+            >
+              <Text style={[styles.buttonText, { fontFamily: 'open-sans-bold' }]}> Sign Up </Text>
+            </TouchableHighlight>
           </View>
-        );
-      }
-    }
-  
+        }
+      </View>
+    );
+
+  }
+
   render() {
     return (
-            this.renderContent()
-          );
-        }
-      }
-      
+      this.renderContent()
+    );
+  }
+}
+
 const styles = StyleSheet.create({
 
-            mainContainer: {
-            flex: 1,
-        },
-      
+  mainContainer: {
+    flex: 1,
+  },
+
   landingContainer: {
-            flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-      
-        },
-      
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+
   buttonContainer: {
-            height: 70,
-          flexDirection: 'row',
-          backgroundColor: '#0E9577'
-      
-        },
-      
+    height: 70,
+    flexDirection: 'row',
+    backgroundColor: '#0E9577'
+
+  },
+
   button: {
-            flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-      
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   buttonText: {
-          color: '#FBFAE1',
-          fontWeight: 'bold',
-          fontSize: 18,
-        },
+    color: '#FBFAE1',
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
 });

@@ -2,7 +2,6 @@ import React, { Component }  from 'react';
 import { StyleSheet, Text, View, Image} from 'react-native';
 import  propTypes  from 'prop-types';
 
-
 const Name = (props) => {
 
   return(

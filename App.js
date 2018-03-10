@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Landing from './app/screens/Landing';
+import RootNavigator from './app/navigation/RootNavigator';
 
 export default class App extends Component {
   render() {
     return (
-        <Landing/>
+        <RootNavigator/>
     );
   }
 }

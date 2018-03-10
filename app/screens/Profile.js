@@ -30,7 +30,6 @@ export default class Feed2 extends Component {
   // }
 
   render(){
-    const { profile } = this.props;
 
 
     return(
@@ -40,7 +39,6 @@ export default class Feed2 extends Component {
         }}
       >
       <Image
-          source={{uri: profile.image}}
           style= {{
             width: '100%', 
             height: 300,
