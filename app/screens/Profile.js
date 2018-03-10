@@ -18,19 +18,20 @@ export default class Feed2 extends Component {
     }
   }
 
-  handleScroll = (event) => {
-    console.log(event.nativeEvent.contentOffset.y)
-  }
+  // handleScroll = (event) => {
+  //   console.log(event.nativeEvent.contentOffset.y)
+  // }
 
-  setZoomRef = (node) => {
-    if (node) {
-      this.zoomRef = node;
-      this.scrollResponderTed = this.zoomRef.getScrollResponder();
-    }
-  }
+  // setZoomRef = (node) => {
+  //   if (node) {
+  //     this.zoomRef = node;
+  //     this.scrollResponderTed = this.zoomRef.getScrollResponder();
+  //   }
+  // }
 
   render(){
     const { profile } = this.props;
+
 
     return(
       <View style={{
@@ -54,11 +55,12 @@ export default class Feed2 extends Component {
            width: 100,
            height: 100, 
            borderRadius: 50, 
-           marginTop: -30,
+           top: -30,
+
            marginLeft: 5,
          }}
+        />  
 
-        />
         <View style={styles.labelButtonContainer}> 
 
           <View style={styles.labelContainer}>
@@ -115,9 +117,11 @@ const styles = StyleSheet.create({
 
   headerContainer: {
     width: '100%',
-    marginTop: -30,
+    top: -30,
     flexDirection: 'row',
     backgroundColor: '#FFEBB7',  
+
+    
   },
 
   labelContainer: {

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient, Font } from 'expo';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
+
 //Screens
-import LoginScreen from './Login';
+import LoginScreen from './LoginScreen';
 import RegisterScreen from './Register';
 import Feed from './Feed';
 import Profile from './Profile';
@@ -22,10 +23,19 @@ export default class Landing extends Component {
 
     this.state = {
       currentScreen: null,
-      activeSlide: 0
-
+      activeSlide: 0,
+      fontLoaded: false,
     };
   }
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'open-sans-bold': require('../../assets/fonts/open-sans/OpenSans-Bold.ttf'),
+    });
+
+    this.setState({ fontLoaded: true });
+  }
+
 
   get pagination() {
     const { activeSlide } = this.state;
@@ -77,73 +87,79 @@ export default class Landing extends Component {
               width={200}
               height={200}
             />
-            <Name />
+            {this.state.fontLoaded &&
+              <Name
+                font='open-sans-bold'
+              />
+            }
           </LinearGradient>
-
+  
+          {/* TODO - Finish Carousel
           <Carousel
             ref={(c) => { this._carousel = c; }}
             data={LANDING_SCREEN_CAROUSEL_DATA}
             onSnapToItem={(index) => this.setState({ activeSlide: index })}
           />
-          {this.pagination}
-
-          <View style={styles.buttonContainer}>
-            <TouchableHighlight
-              style={styles.button}
-              onPress={() => this.setState({ currentScreen: 'login' })}
-              underlayColor='#04DEAD'
-            >
-              <Text style={styles.buttonText}> Login </Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={styles.button}
-              onPress={() => this.setState({ currentScreen: 'register' })}
-              underlayColor='#04DEAD'
-            >
-              <Text style={styles.buttonText}> Sign Up </Text>
-            </TouchableHighlight>
+          {this.pagination} */}
+          {this.state.fontLoaded &&
+            <View style={styles.buttonContainer}>
+              <TouchableHighlight
+                style={styles.button}
+                onPress={() => this.setState({ currentScreen: 'login' })}
+                underlayColor='#04DEAD'
+              >
+                <Text style={[styles.buttonText, {fontFamily: 'open-sans-bold'}]}> Login </Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.button}
+                onPress={() => this.setState({ currentScreen: 'register' })}
+                underlayColor='#04DEAD'
+              >
+                <Text style={[styles.buttonText, {fontFamily: 'open-sans-bold'}]}> Sign Up </Text>
+              </TouchableHighlight>
+            </View>
+          }
           </View>
-        </View>
-      );
+        );
+      }
     }
-  }
-
+  
   render() {
     return (
-      this.renderContent()
-    );
-  }
-}
-
+            this.renderContent()
+          );
+        }
+      }
+      
 const styles = StyleSheet.create({
 
-  mainContainer: {
-    flex: 1,
-  },
-
+            mainContainer: {
+            flex: 1,
+        },
+      
   landingContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-
-  },
-
+            flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+      
+        },
+      
   buttonContainer: {
-    height: 70,
-    flexDirection: 'row',
-    backgroundColor: '#0E9577'
-
-  },
-
+            height: 70,
+          flexDirection: 'row',
+          backgroundColor: '#0E9577'
+      
+        },
+      
   button: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
+            flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      
   buttonText: {
-    color: '#FBFAE1',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
+          color: '#FBFAE1',
+          fontWeight: 'bold',
+          fontSize: 18,
+        },
 });

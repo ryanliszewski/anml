@@ -5,7 +5,7 @@ import  { LinearGradient }  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 //Screens
-// import Profile from './Profile';
+import Profile from './Profile';
 
 //Constant
 import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
@@ -23,12 +23,14 @@ export default class Login extends React.Component {
       profile: null, 
       screen: null 
     }
+    
   }
 
   renderProfile = (profile) => {
     this.setState({
       profile: profile,
       screen: 'profile'
+
     })
   }
 
@@ -70,18 +72,19 @@ export default class Login extends React.Component {
             }}
         />
       </View> 
-      {/* <View style={styles.buttonsContainer}>
+      <View style={styles.buttonsContainer}>
         <Ionicons
         name= "ios-heart-outline"
         size={30}
         color='#085947'
         style={{paddingRight: 8}}
+
         />
 
         <Ionicons
         name="ios-chatbubbles-outline"
         size={30}
-        color='#085947'
+        color='#085947' 
         style={{paddingRight: 8}}
         />
 
@@ -90,7 +93,7 @@ export default class Login extends React.Component {
         size={30}
         color='#085947'
         />
-      </View>   */}
+      </View>  
       <View style={styles.captionContainer}>   
         <Text style={styles.captionText}> {item.post["caption"]} </Text> 
         <Text style={styles.timeText}> {item.post["date"]} </Text>
@@ -104,7 +107,7 @@ export default class Login extends React.Component {
     const { screen, profile } = this.state; 
 
     if(screen === 'profile') {
-      // return <Profile profile={profile}/> 
+      return <Profile profile={profile}/> 
     } else {
       return(
         <ScrollView style={styles.scroll}>

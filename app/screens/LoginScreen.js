@@ -13,7 +13,7 @@ import ButtonOutline from '../components/ButtonOutline';
 import AlertCustom from '../components/Alert';
 import Logo from '../components/Logo';
 
-export default class Login extends React.Component { 
+export default class LoginScreen extends React.Component { 
 
   constructor(props){
     super(props);
@@ -31,7 +31,7 @@ export default class Login extends React.Component {
   }
 
   handleNameInputSubmit() {
-    this.setState({focusPasswordInput: true})
+    this.setState({focusPasswordInput: true});
   }
 
   handlePress = () => { 
@@ -46,6 +46,7 @@ export default class Login extends React.Component {
         ],
 
         { cancelable: false })
+        
     }
   }
 
