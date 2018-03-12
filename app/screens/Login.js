@@ -22,6 +22,36 @@ export default class Login extends React.Component {
     }
   }
 
+  async componentDidMount() {
+    this.pingServer()
+  }
+
+
+  async pingServer() {
+    // Check server status
+    // Simple GET request to /api
+    try {
+      const response = await fetch(`https://daug-app.herokuapp.com/api`, {
+        method: 'GET'
+      });
+      const responseJSON = await response.json();
+
+      debugger
+      
+      if (response.status === 200) {
+        console.log(responseJSON.message);
+        console.log('Server up and running!');
+      } else {
+        const error = responseJSON.message
+
+        console.log("Server request failed " + error);
+      }
+    } catch (error) {
+      console.log("Server is down " + error);
+    }
+  }
+
+
   isEnabled = () => {
     const {username, password} = this.state;
     return username.length > 2 && password.length > 7;

@@ -12,15 +12,14 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    }
+
   }
 
-  renderProfile = (profile) => {
-    this.setState({
+  // renderProfile = (profile) => {
+  //   this.setState({
 
-    })
-  }
+  //   })
+  // }
 
   _renderItem = ({ item }) => {
     return (
@@ -33,7 +32,7 @@ export default class Login extends React.Component {
       >
 
         <TouchableOpacity
-          onPress={() => this.renderProfile(item)}
+          // onPress={() => this.renderProfile(item)}
         >
           <View style={styles.headerContainer}>
             <Image

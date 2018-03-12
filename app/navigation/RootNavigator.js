@@ -9,12 +9,12 @@ export default StackNavigator({
     screen: IntroStack,
   }, 
 
-  TabNavigator: {
-    screen: TabNavigator,
-  }
+    TabNavigator: {
+      screen: TabNavigator,
+    }
 },
 {
-  initialRouteName: 'IntroStack',
+  initialRouteName: 'TabNavigator',
   headerMode: 'none',
   mode: 'modal'
 }
