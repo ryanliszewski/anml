@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {  View, Text, StyleSheet, TextInput, Button, Alert} from 'react-native';
 
-
-
 export default class CreatePost extends Component {
  
   constructor(props){

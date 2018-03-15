@@ -26,7 +26,6 @@ export default class Login extends React.Component {
     this.pingServer()
   }
 
-
   async pingServer() {
     // Check server status
     // Simple GET request to /api

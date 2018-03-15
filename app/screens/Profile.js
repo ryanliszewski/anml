@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import StatsLabel from '../components/StatsLabel';
 import ButtonOutline from '../components/ButtonOutline';
 
-export default class Feed2 extends Component {
+export default class Profile extends Component {
 
   constructor(props){
     super(props);
@@ -31,6 +31,7 @@ export default class Feed2 extends Component {
 
   render(){
 
+    const { navigate } = this.props.navigation
 
     return(
       <View style={{
@@ -47,7 +48,7 @@ export default class Feed2 extends Component {
 
 
       <View style={styles.headerContainer}>
-        <Image 
+        {/* <Image 
          source={{uri: profile.image}}
          style={{
            width: 100,
@@ -57,7 +58,7 @@ export default class Feed2 extends Component {
 
            marginLeft: 5,
          }}
-        />  
+        />   */}
 
         <View style={styles.labelButtonContainer}> 
 
@@ -84,6 +85,7 @@ export default class Feed2 extends Component {
             width={160}
             height={30}
             borderRadius={20}
+            onPress={() => navigate('EditProfile')}
           />
           </View>
         </View>
