@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,16 +12,100 @@ export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
-
+    this.state = {
+      isFeedLoading: true,
+      posts: null,
+      errors: null,
+    }
   }
 
-  // renderProfile = (profile) => {
-  //   this.setState({
+  componentDidMount() {
+    this.getFeed()
+  }
 
-  //   })
-  // }
+  async getFeed() {
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+
+        responseJSON = await response.json();
+        console.log(responseJSON)
+        this.setState({
+          isFeedLoading: false,
+          posts: responseJSON,
+        })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ errors: responseJSON.errors })
+        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+      Alert.alert('Unable to get the feed. Please try again later')
+    }
+  }
+
+  _renderProfileImage = (image) => {
+    if (image) {
+      return(
+      <Image
+        source={{ uri: image }}
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: 15,
+        }}
+      />
+      )
+    }
+  }
+
+  _renderDescription = (description) => {
+    if(description){
+      return(
+        <Text style={styles.captionText}> {description} </Text>
+      )
+    }
+  }
+
+  _renderImage = (image) => {
+
+    if(image){
+      return(
+        <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: image }}
+          style={{
+            width: 400,
+            height: 400,
+            borderRadius: 60,
+          }}
+        />
+        </View>
+      )
+    }
+  }
 
   _renderItem = ({ item }) => {
+
+    console.log(item)
+
     return (
       <View
         style={styles.post}
@@ -32,33 +116,16 @@ export default class Login extends React.Component {
       >
 
         <TouchableOpacity
-          // onPress={() => this.renderProfile(item)}
+        // onPress={() => this.renderProfile(item)}
         >
           <View style={styles.headerContainer}>
-            <Image
-              source={{ uri: item.image }}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 15,
-              }}
-            />
+            {this._renderProfileImage(item.user["profile"])}
             <View style={styles.nameLocationContainer}>
-              <Text style={styles.nameText}> {item.name} </Text>
-              <Text style={styles.locationText}> {item.location} </Text>
+              <Text style={styles.nameText}> {item.user["name"]} </Text>
             </View>
           </View>
         </TouchableOpacity>
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: item.post["image"] }}
-            style={{
-              width: 400,
-              height: 400,
-              borderRadius: 60,
-            }}
-          />
-        </View>
+        {this._renderImage(item.image)}
         <View style={styles.buttonsContainer}>
           <Ionicons
             name="ios-heart-outline"
@@ -81,30 +148,40 @@ export default class Login extends React.Component {
           />
         </View>
         <View style={styles.captionContainer}>
-          <Text style={styles.captionText}> {item.post["caption"]} </Text>
-          <Text style={styles.timeText}> {item.post["date"]} </Text>
+          {this._renderDescription(item.description)}
+          <Text style={styles.timeText}> 2hr </Text>
         </View>
       </View>
     );
   }
 
-
+  
   renderContent() {
+
+    const { isFeedLoading, posts } = this.state
+    console.log(!isFeedLoading)
+
     return (
+
       <ScrollView style={styles.scroll}>
-        <LinearGradient
-          style={styles.container}
-          colors={['#FFEBB7', '#fff9ea']}
-          start={{ x: 0.0, y: 0.0 }}
-          end={{ x: 1.0, y: 1.0 }}
-          locations={[0.1, 0.8]}
-        >
+
+        {isFeedLoading &&
+          <LinearGradient
+            style={styles.container}
+            colors={['#FFEBB7', '#fff9ea']}
+            start={{ x: 0.0, y: 0.0 }}
+            end={{ x: 1.0, y: 1.0 }}
+            locations={[0.1, 0.8]}
+          />
+        }
+
+        {!isFeedLoading &&
           <FlatList
-            data={SOCIAL_FEED_MOCK_DATA}
+            data={posts}
             style={styles.list}
             renderItem={({ item }) => this._renderItem({ item })}
           />
-        </LinearGradient>
+        }
       </ScrollView>
     );
   }
@@ -124,6 +201,7 @@ const styles = StyleSheet.create({
 
   scroll: {
     paddingTop: 30,
+    flexGrow: 1,
   },
 
   nameLocationContainer: {

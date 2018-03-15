@@ -55,7 +55,7 @@ export default class CreatePost extends Component {
             'Success!',
             'You created a post<3',
             [
-              // { text: "Continue", onPress: () => navigate("TabNavigator") }
+              { text: "Continue", onPress: () => navigate("TabNavigator") }
             ],
             { cancelable: false }
           )
