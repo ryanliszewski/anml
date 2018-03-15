@@ -14,14 +14,14 @@ return (
     onPress={() => this.setState({currentScreen: 'login'})}
     underlayColor='#04DEAD'
   >
-    <Text style={styles.buttonText}> Login </Text>
+    <Text style={[styles.buttonText, {fontFamily: props.font}]}> Login </Text>
   </TouchableOpacity>
   <TouchableOpacity
     style={styles.button}
     onPress={() => this.setState({currentScreen: 'register'})}
     underlayColor='#04DEAD'
   >
-    <Text style={styles.buttonText}> Sign Up </Text>
+    <Text style={[styles.buttonText, {fontFamily: props.font}]}> Sign Up </Text>
     </TouchableOpacity>
   </View> 
   
@@ -31,12 +31,13 @@ return (
 ButtonFill.propTypes = {
   buttonEnabled: propTypes.bool.isRequired,
   title: propTypes.string.isRequired,
-  onPress: propTypes.func
+  onPress: propTypes.func,
+  font: propTypes.string,
+
 }
 
 const styles = StyleSheet.create({
   buttonText: {
-    fontFamily: 'Futura',
     color: '#fff',
     fontSize: 24
   },

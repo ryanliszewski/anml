@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
 
   label: {
     color: '#528a7e',
-    fontFamily: 'Futura',
+    // fontFamily: 'Futura',
     fontSize: 12,
   },
 
   stats: {
     color: '#528a7e',
-    fontFamily: 'Futura',
+    // fontFamily: 'Futura',
     fontSize: 12,
   },
 });

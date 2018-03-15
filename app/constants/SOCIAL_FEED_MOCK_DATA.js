@@ -8,6 +8,7 @@ export const SOCIAL_FEED_MOCK_DATA = [
       date: '2 hrs ago'
     }
   },
+
   {
     name: 'Ryan Liszewski',
     image: 'https://avatars3.githubusercontent.com/u/5275250?s=460&v=4',
@@ -18,6 +19,7 @@ export const SOCIAL_FEED_MOCK_DATA = [
       date: '2 hrs ago'
     }
   },
+
   {
     name: 'Thomas Zhu',
     image: 'http://thomaszhu.com/resources/thomas_avatar.jpeg',
@@ -28,6 +30,7 @@ export const SOCIAL_FEED_MOCK_DATA = [
       date: '2 hrs ago'
     }
   },
+  
   {
     name: 'Bhavesh Chowdhury',
     image: 'https://avatars3.githubusercontent.com/u/13439148?s=460&v=4',

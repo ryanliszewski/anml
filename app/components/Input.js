@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 
 
 const InputBottomBorder = (props) => {
-
+  
   focus = () => {
     this.focus()
   }
@@ -19,7 +19,8 @@ return(
       style={styles.icon}
       />  
     <TextInput
-        style={styles.input}
+        style={[styles.input,
+          {fontFamily: props.font}]}
         value={props.value}
         secureTextEntry={props.securedText}
         placeholder={props.placeholder}
@@ -45,6 +46,7 @@ InputBottomBorder.propTypes = {
   keyType: propTypes.string,
   onSubmitEditing: propTypes.func,
   focus: propTypes.bool, 
+  font: propTypes.string,
 }
 
 
@@ -53,9 +55,10 @@ const styles = StyleSheet.create({
     width: 250,
     paddingBottom: 5,
     paddingLeft: 10,
-    fontFamily: 'Futura',
-    fontSize: 18,
+    fontSize: 20,
     color: '#053A2E',
+    borderBottomWidth: 0,
+    borderColor: 'transparent',
  
   },
 
