@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text,  } from 'react-native';
+import { View, Text, StyleSheet  } from 'react-native';
 
-class componentName extends Component {
+export default class PostDetail extends Component {
   render() {
+
+    const {params } = this.props.navigation.state; 
+    console.log(params)
+
     return (
       <View>
         <Text> textInComponent </Text>
@@ -11,4 +15,6 @@ class componentName extends Component {
   }
 }
 
-export default componentName;
+const styles = StyleSheet.create({
+  
+});

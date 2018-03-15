@@ -104,7 +104,7 @@ export default class Login extends React.Component {
 
   _renderItem = ({ item }) => {
 
-    console.log(item)
+    const { navigate } = this.props.navigation
 
     return (
       <View
@@ -116,10 +116,13 @@ export default class Login extends React.Component {
       >
 
         <TouchableOpacity
-        // onPress={() => this.renderProfile(item)}
+        onPress={() => navigate('Profile',{
+          profile: item.user,
+        }
+        )}
         >
           <View style={styles.headerContainer}>
-            {this._renderProfileImage(item.user["profile"])}
+            {this._renderProfileImage(item.user["profile_image"])}
             <View style={styles.nameLocationContainer}>
               <Text style={styles.nameText}> {item.user["name"]} </Text>
             </View>
@@ -155,7 +158,6 @@ export default class Login extends React.Component {
     );
   }
 
-  
   renderContent() {
 
     const { isFeedLoading, posts } = this.state

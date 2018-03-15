@@ -2,22 +2,22 @@ import { TabNavigator } from 'react-navigation';
 
 import Feed from '../screens/Feed';
 import CreatePost from '../screens/CreatePost';
+import SocialStack from './SocialStack';
 import ProfileStack from './ProfileStack';
 
 export default TabNavigator({
 
     Feed: {
-      screen: Feed,
+      screen: SocialStack,
+    },
+
+    CreatePost: {
+      screen: CreatePost
     },
 
     Profile: {
       screen: ProfileStack
     },
-
-    CreatePost: {
-      screen: CreatePost
-    }
-
 
 }, {
   initialRouteName: 'Feed', 
