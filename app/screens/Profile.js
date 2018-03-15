@@ -29,28 +29,27 @@ export default class Profile extends Component {
   //   }
   // }
 
-  render(){
 
-    const { navigate } = this.props.navigation
-    console.log(this.props.navigation.state)
-
-    return(
-      <View style={{
-          flex: 1,
-          alignContent: 'center',
+  _renderBannerImage = (image) => {
+    if(image){
+      return(
+        <Image
+        source={{uri: image }}
+        style= {{
+          width: '100%', 
+          height: 300,
         }}
-      >
-      <Image
-          style= {{
-            width: '100%', 
-            height: 300,
-          }}
       />
+      )
+    }
+  }
 
 
-      <View style={styles.headerContainer}>
-        {/* <Image 
-         source={{uri: profile.image}}
+  _renderProfileImage = (image) => {
+    if(image){
+      return(
+        <Image 
+         source={{uri: image}}
          style={{
            width: 100,
            height: 100, 
@@ -59,7 +58,30 @@ export default class Profile extends Component {
 
            marginLeft: 5,
          }}
-        />   */}
+        />  
+      )
+    }
+  }
+
+
+  render(){
+
+    const { navigate } = this.props.navigation
+    const { profile } = this.props.navigation.state.params
+
+    console.log(profile)
+
+    return(
+      <View style={{
+          flex: 1,
+          alignContent: 'center',
+        }}
+      >
+      
+      {this._renderBannerImage(profile.banner_image)}
+
+      <View style={styles.headerContainer}>
+        {this._renderProfileImage(profile.profile_image)}
 
         <View style={styles.labelButtonContainer}> 
 
@@ -91,20 +113,6 @@ export default class Profile extends Component {
           </View>
         </View>
       </View> 
-      
-      
-      {/* <ScrollView 
-        style={styles.container}
-        maximumZoomScale = {2.0}
-        overScrollMode='never'
-        contentContainerStyle=
-          {{ alignItems: 'center',
-          justifyContent: 'center' }}
-        ref={this.setZoomRef}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: this.state.scrollY}}}]
-        )}
-      /> */}
      </View> 
     );
   }

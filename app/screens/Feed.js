@@ -114,7 +114,7 @@ export default class Login extends React.Component {
         shadowOffset={{ width: 2, height: -2 }}
         shadowOpacity={0.75}
       >
-
+      
         <TouchableOpacity
         onPress={() => navigate('Profile',{
           profile: item.user,
