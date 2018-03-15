@@ -13,22 +13,44 @@ export default class Profile extends Component {
   constructor(props){
     super(props);
 
-    this.state = {
-      scrollY: new Animated.Value(0),
-    }
   }
 
-  // handleScroll = (event) => {
-  //   console.log(event.nativeEvent.contentOffset.y)
-  // }
+  async getProfilePosts() {
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
 
-  // setZoomRef = (node) => {
-  //   if (node) {
-  //     this.zoomRef = node;
-  //     this.scrollResponderTed = this.zoomRef.getScrollResponder();
-  //   }
-  // }
+      let responseJSON = null
 
+      if (response.status === 200) {
+
+        responseJSON = await response.json();
+        console.log(responseJSON)
+        this.setState({
+          isFeedLoading: false,
+          posts: responseJSON,
+        })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ errors: responseJSON.errors })
+        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+      Alert.alert('Unable to get the feed. Please try again later')
+    }
+  }
 
   _renderBannerImage = (image) => {
     if(image){
@@ -62,7 +84,6 @@ export default class Profile extends Component {
       )
     }
   }
-
 
   render(){
 
