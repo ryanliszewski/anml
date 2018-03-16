@@ -4,10 +4,7 @@ import {  Icon } from 'react-native-elements';
 import  { LinearGradient }  from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
-
 import Profile from './Profile';
-
 
 export default class Feed2 extends Component {
 
