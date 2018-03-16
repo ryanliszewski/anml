@@ -19,10 +19,16 @@ export default class Login extends React.Component {
       password: '',
       focusPasswordInput: false,
       screen: null,
+      fontLoaded: false,
     }
   }
 
   async componentDidMount() {
+    await Font.loadAsync({
+      'open-sans-bold': require('../../assets/fonts/open-sans/OpenSans-Bold.ttf'),
+    });
+
+    this.setState({ fontLoaded: true });
   }
 
   async pingServer() {
@@ -97,12 +103,13 @@ export default class Login extends React.Component {
   }
 
   renderContent() {
-    const { screen } = this.state;
+    const { screen, fontLoaded } = this.state;
 
     if (screen === 'feed') {
       return <Feed />
     } else {
       return (
+
         <LinearGradient
           style={styles.mainContainer}
           colors={['#FFEBB7', '#0E9577']}
@@ -116,7 +123,6 @@ export default class Login extends React.Component {
               height={150}
             />
           </View>
-
           <View style={styles.form}>
             <View style={styles.inputContainer}>
               <InputBottomBorder
@@ -147,8 +153,12 @@ export default class Login extends React.Component {
               height={40}
               borderRadius={40}
             />
+
           </View>
+
+        
         </LinearGradient>
+    
       );
     }
   }

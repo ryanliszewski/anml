@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation';
 
 import PostDetail from '../screens/PostDetail';
-import Feed from '../screens/Feed';
+import Feed from '../screens/Feed2';
 import Profile from '../screens/Profile'
 
 export default StackNavigator({

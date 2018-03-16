@@ -61,7 +61,6 @@ export default class Landing extends Component {
 
     const { navigate } = this.props.navigation;
 
-
     return (
       <View style={styles.mainContainer}>
         <LinearGradient

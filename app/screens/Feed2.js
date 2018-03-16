@@ -8,56 +8,133 @@ import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
 
 import Profile from './Profile';
 
+
 export default class Feed2 extends Component {
 
   constructor(props){
     super(props);
 
     this.state = {
-      screen: null,
-      profile: null,
+      isFeedLoading: true,
+      posts: null, 
     }
   }
 
   renderProfile = (profile) => {
-    this.setState({
-      screen: 'profile',
-      profile: profile,
-    })
   }
 
-  //This will render one post
-  _renderItem = ({item}) => {
-    return(
-    <View style={styles.itemContainer}>
-      
-      <TouchableOpacity
-        onPress={() => this.renderProfile(item)}
-      >
-      
-      <View style={styles.headerContainer}>
+  componentDidMount(){
+    //When the component is loaded
+    this.getFeed()
+  }
+
+
+  async getFeed() {
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+
+        responseJSON = await response.json();
+
+        console.log(responseJSON)
+        
+        //Save the posts. 
+        this.setState({
+          isFeedLoading: false,
+          posts: responseJSON,
+        })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        console.log(responseJSON)
+
+        this.setState({ errors: responseJSON.errors })
+        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+      }
+    } catch (error) {
+
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+      Alert.alert('Unable to get the feed. Please try again later')
+    }
+  }
+
+  _renderImage = (image) => {
+    //Render big image
+    if(image){
+      return(
         <Image
-          source={{uri: item.image}}
+        source={{uri: image}}
+        style={{
+          width:"100%", 
+          height:400, 
+        }}
+      />
+      )
+    } else {
+      //return place holder image
+    }
+  }
+
+  _renderProfileImage = (image) => {
+    //Render profile image
+    if(image){
+      return(
+        <Image
+          source={{uri: image}}
           style={{
             //Always set width and hieght when getting a picture from online 
             width: 50,
             height: 50, 
           }}
         />
+      )
+    }
+  }
+
+  _renderDescription = (description) => {
+    //Render Description 
+    if(description){
+      return(
+        <Text> {description} </Text>
+      )
+    }
+  }
+
+  //This will render one post
+  _renderItem = ({item: post}) => {
+
+    return (    
+    <View style={styles.itemContainer}>
+      
+      {/* <TouchableOpacity
+        onPress={() => this.renderProfile(item)}
+      > */}
+      
+      <View style={styles.headerContainer}>
+        
+        {this._renderProfileImage(post.user["profile_image"])}
+
         <View style={styles.nameLocation}>
-          <Text> {item.name} </Text> 
-          <Text> {item.location} </Text> 
+          <Text> {post.user["name"]} </Text> 
+          <Text> San Franisco </Text> 
         </View>
       </View> 
-        </TouchableOpacity>
+        {/* </TouchableOpacity> */}
       
-        <Image
-          source={{uri: item.post["image"]}}
-          style={{
-            width:"100%", 
-            height:400, 
-          }}
-        />
+        {this._renderImage(post.image)}
 
       <View style={styles.captionContainer}>
         
@@ -82,9 +159,8 @@ export default class Feed2 extends Component {
           color="#085947"
           />
         </View>
-
-        <Text> {item.post["caption"]}</Text>
-        <Text> {item.post["date"]}</Text>
+       {this._renderDescription(post.description)}
+        <Text> 2 hr </Text>
       </View>
     </View> 
     );
@@ -92,27 +168,23 @@ export default class Feed2 extends Component {
 
 
   renderContent(){
-    const { screen, profile } = this.state; 
-    
-    if(screen === 'profile'){
-      return <Profile profile={profile}/>
-    } else {
+    const { isFeedLoading, posts } = this.state; 
+
       return(
         //Scrolls 
         <ScrollView style={styles.container}>
           
-          <FlatList 
+          {!isFeedLoading &&
 
-            data={SOCIAL_FEED_MOCK_DATA}
-
-            style={styles.item}
-
-            
-            renderItem={({item, seperator}) => this._renderItem({item, seperator})}
+            <FlatList 
+              data={posts}
+              style={styles.item}
+              keyExtractor={(item, post) => post}
+              renderItem={({item}) => this._renderItem({item})}
           />
+          }
         </ScrollView>
       );
-    }
   }
 
   render(){
