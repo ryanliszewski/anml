@@ -24,10 +24,10 @@ export default class Profile extends Component {
   }
 
   async getProfilePosts() {
-    const { profile } = this.props.navigation.state.params
+    const { user } = this.props.navigation.state.params
 
     try {
-      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${profile.id}`,  {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${user.id}`,  {
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -67,7 +67,7 @@ export default class Profile extends Component {
           source={{ uri: image }}
           style={{
             width: '100%',
-            height: 300,
+            height: 200,
           }}
         />
       )
@@ -125,18 +125,16 @@ export default class Profile extends Component {
   render() {
 
     const { navigate } = this.props.navigation
-    const { profile } = this.props.navigation.state.params
+    const { user } = this.props.navigation.state.params
     const { isPostsLoading, posts } = this.state
-
-    console.log(isPostsLoading)
 
     return (
 
       <ScrollView style={{flexGrow: 1}}>
-          {this._renderBannerImage(profile.banner_image)}
+          {this._renderBannerImage(user.banner_image)}
 
           <View style={styles.headerContainer}>
-            {this._renderProfileImage(profile.profile_image)}
+            {this._renderProfileImage(user.profile_image)}
 
             <View style={styles.labelButtonContainer}>
 
@@ -154,10 +152,8 @@ export default class Profile extends Component {
                   title='following'
                 />
               </View>
-
               <View style={styles.buttonContainer}>
                 <ButtonOutline
-
                   title='edit profile'
                   buttonEnabled={true}
                   width={160}
@@ -193,6 +189,10 @@ const styles = StyleSheet.create({
     marginTop: -30,
   },
 
+  bio: {
+    paddingTop: 10,
+  },
+
   headerContainer: {
     width: '100%',
     top: -30,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 5,
     paddingBottom: 10,
   }
 })

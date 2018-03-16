@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import propTypes from 'prop-types';
 
 const ButtonOutline = (props) => {
-  
+
 return (
   <TouchableOpacity
       style={{borderColor: props.buttonEnabled ? '#18ebbb': '#eb1848',
@@ -18,7 +18,7 @@ return (
       activeOpacity={props.buttonEnabled ? 0.25 : 1}
       onPress={props.onPress}
     >
-      <Text style={styles.buttonText}>{props.title}</Text> 
+      <Text style={[styles.buttonText, {fontFamily: props.font}]}>{props.title}</Text> 
     </TouchableOpacity>
   ); 
 }
@@ -30,11 +30,11 @@ ButtonOutline.propTypes = {
   width: propTypes.number.isRequired,
   height: propTypes.number.isRequired,
   borderRadius: propTypes.number,
+  font: propTypes.string,
 }
 
 const styles = StyleSheet.create({
   buttonText: {
-    // fontFamily: 'Futura',
     color: '#fff',
     fontSize: 20
   },

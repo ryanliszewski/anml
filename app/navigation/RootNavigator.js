@@ -14,7 +14,7 @@ export default StackNavigator({
     }
 },
 {
-  initialRouteName: 'TabNavigator',
+  initialRouteName: 'IntroStack',
   headerMode: 'none',
   mode: 'modal'
 }

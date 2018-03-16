@@ -1,7 +1,7 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, Alert } from 'react-native';
-import {  Icon } from 'react-native-elements';
-import  {LinearGradient}  from 'expo';
+import { Icon } from 'react-native-elements';
+import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 //Components
@@ -10,9 +10,9 @@ import ButtonOutline from '../components/ButtonOutline';
 import AlertCustom from '../components/Alert';
 import Logo from '../components/Logo';
 
-export default class Login extends React.Component { 
+export default class Login extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       username: '',
@@ -23,23 +23,54 @@ export default class Login extends React.Component {
   }
 
   async componentDidMount() {
-    this.pingServer()
   }
 
   async pingServer() {
-    // Check server status
-    // Simple GET request to /api
-    try {
-      const response = await fetch(`https://daug-app.herokuapp.com/api`, {
-        method: 'GET'
-      });
-      const responseJSON = await response.json();
+    const { username, password } = this.state
+    const { navigate } = this.props.navigation
 
-      debugger
-      
-      if (response.status === 200) {
-        console.log(responseJSON.message);
-        console.log('Server up and running!');
+    var details = {
+      'email': username,
+      'password': password, 
+    }
+
+    var formBody = [];
+
+    for(var property in details){
+      var encodedKey = encodeURIComponent(property);
+      var encodedValue = encodeURIComponent(details[property]);
+
+      formBody.push(encodedKey + "=" + encodedValue);
+    }
+
+    formBody = formBody.join("&");
+
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+        body: formBody
+      });
+
+      let responseJSON = null
+
+      if (response.status === 201) {
+
+        responseJSON = await response.json();
+        
+        Alert.alert(
+          'Success!',
+          'Welcome to anml!',
+          [
+            { text: "Continue", onPress: () => navigate("TabNavigator", {
+              user: responseJSON.user
+            }
+          )}
+          ],
+          { cancelable: false }
+        )
       } else {
         const error = responseJSON.message
 
@@ -50,92 +81,79 @@ export default class Login extends React.Component {
     }
   }
 
-
   isEnabled = () => {
-    const {username, password} = this.state;
+    const { username, password } = this.state;
     return username.length > 2 && password.length > 7;
   }
 
   handleNameInputSubmit() {
-  
-    this.setState({focusPasswordInput: true});
+    this.setState({ focusPasswordInput: true });
   }
 
-  handlePress = () => { 
-    const {username, enabled} = this.state
-    const { navigation } = this.props.navigation
-
-    if(this.isEnabled()){
-      Alert.alert(
-        `Success`,
-        `You've logged in, ${username}`,
-        [
-          {text: 'OK', onPress: () => Navigation('TabNavigator')},
-        ],
-
-        { cancelable: false })
-        
+  handlePress = () => {
+    if (this.isEnabled()) {
+      this.pingServer()
     }
   }
 
-  renderContent(){
+  renderContent() {
     const { screen } = this.state;
 
-    if(screen === 'feed'){
-      return <Feed/> 
+    if (screen === 'feed') {
+      return <Feed />
     } else {
-      return(
+      return (
         <LinearGradient
-        style={styles.mainContainer}
-        colors={['#FFEBB7','#0E9577']}
-        start={{x: 0.0, y: 0.0}}
-        end={{x:1.0, y: 1.0}}
-        locations={[0.1,0.8]}
-      >
-        <View style={styles.logoContainer}>
-          <Logo 
-            width={150}
-            height={150}
+          style={styles.mainContainer}
+          colors={['#FFEBB7', '#0E9577']}
+          start={{ x: 0.0, y: 0.0 }}
+          end={{ x: 1.0, y: 1.0 }}
+          locations={[0.1, 0.8]}
+        >
+          <View style={styles.logoContainer}>
+            <Logo
+              width={150}
+              height={150}
             />
-        </View>
+          </View>
 
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-            <InputBottomBorder
-              securedText={false}
-              placeholder='Username'
-              iconName='ios-person-outline'
-              value={this.state.username}
-              onChangeText={(text) => this.setState({username: text})}
-              keyType = 'next'
+              <InputBottomBorder
+                securedText={false}
+                placeholder='Username'
+                iconName='ios-person-outline'
+                value={this.state.username}
+                onChangeText={(text) => this.setState({ username: text })}
+                keyType='next'
               />
             </View>
-          <View style={styles.inputContainer}>
-            <InputBottomBorder
-              securedText={true}
-              placeholder='Password'
-              iconName='ios-lock-outline'
-              value={this.state.password}
-              onChangeText={(text) => this.setState({password: text})}
-              keyType = 'go'
-              onSubmitEditing={() => this.handlePress()}
+            <View style={styles.inputContainer}>
+              <InputBottomBorder
+                securedText={true}
+                placeholder='Password'
+                iconName='ios-lock-outline'
+                value={this.state.password}
+                onChangeText={(text) => this.setState({ password: text })}
+                keyType='go'
+                onSubmitEditing={() => this.handlePress()}
+              />
+            </View>
+            <ButtonOutline
+              buttonEnabled={this.isEnabled()}
+              title='Login'
+              onPress={this.handlePress}
+              width={160}
+              height={40}
+              borderRadius={40}
             />
-          </View> 
-          <ButtonOutline 
-            buttonEnabled={this.isEnabled()}
-            title='Login'
-            onPress={this.handlePress}
-            width={160}
-            height={40}
-            borderRadius={40}
-          />
-        </View>
-      </LinearGradient> 
+          </View>
+        </LinearGradient>
       );
     }
   }
 
-  render(){
+  render() {
     return (
       this.renderContent()
     );
