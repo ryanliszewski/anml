@@ -1,6 +1,5 @@
 import { TabNavigator } from 'react-navigation';
 
-import Feed from '../screens/Feed2';
 import Profile from '../screens/Profile';
 import CreatePost from '../screens/CreatePost';
 import SocialStack from './SocialStack';

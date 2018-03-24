@@ -4,13 +4,10 @@ import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-//Constant
-import { SOCIAL_FEED_MOCK_DATA } from '../constants/SOCIAL_FEED_MOCK_DATA';
-
 export default class Login extends React.Component {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       isFeedLoading: true,
@@ -24,7 +21,6 @@ export default class Login extends React.Component {
   }
 
   async getFeed() {
-
     try {
       let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
         method: 'GET',
@@ -38,7 +34,6 @@ export default class Login extends React.Component {
       if (response.status === 200) {
 
         responseJSON = await response.json();
-        console.log(responseJSON)
         this.setState({
           isFeedLoading: false,
           posts: responseJSON,
@@ -46,8 +41,6 @@ export default class Login extends React.Component {
       } else {
         responseJSON = await response.json();
         const error = responseJSON.message
-
-        console.log(responseJSON)
 
         this.setState({ errors: responseJSON.errors })
         Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
@@ -85,7 +78,6 @@ export default class Login extends React.Component {
   }
 
   _renderImage = (image) => {
-
     if(image){
       return(
         <View style={styles.imageContainer}>
@@ -106,6 +98,7 @@ export default class Login extends React.Component {
 
     const { navigate } = this.props.navigation
 
+    console.log(item.user)
     return (
       <View
         style={styles.post}
@@ -117,7 +110,7 @@ export default class Login extends React.Component {
 
         <TouchableOpacity
         onPress={() => navigate('Profile',{
-          profile: item.user,
+          user: item.user,
         }
         )}
         >
@@ -164,7 +157,6 @@ export default class Login extends React.Component {
     console.log(!isFeedLoading)
 
     return (
-
       <ScrollView style={styles.scroll}>
 
         {isFeedLoading &&

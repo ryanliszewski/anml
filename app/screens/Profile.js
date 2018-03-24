@@ -123,7 +123,6 @@ export default class Profile extends Component {
   }
 
   render() {
-
     const { navigate } = this.props.navigation
     const { user } = this.props.navigation.state.params
     const { isPostsLoading, posts } = this.state
