@@ -17,10 +17,10 @@ export default class Login extends React.Component {
   }
 
   componentDidMount() {
-    this.getFeed()
+    this.fetchFeed()
   }
 
-  async getFeed() {
+  async fetchFeed() {
     try {
       let response = await fetch(`https://daug-app.herokuapp.com/api/feed`, {
         method: 'GET',
@@ -78,27 +78,31 @@ export default class Login extends React.Component {
   }
 
   _renderImage = (image) => {
+    const { navigate } = this.props.navigation
     if(image){
       return(
-        <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: image }}
-          style={{
-            width: 400,
-            height: 400,
-            borderRadius: 60,
-          }}
-        />
-        </View>
+        <TouchableOpacity
+          onPress={() => navigate('PostDetail')}
+        >
+          <View style={styles.imageContainer}>
+          <Image
+            source={{ uri: image }}
+            style={{
+              width: 400,
+              height: 400,
+              borderRadius: 60,
+            }}
+          />
+          </View>
+        </TouchableOpacity>
       )
     }
   }
 
-  _renderItem = ({ item }) => {
+  _renderItem = ({ item: post }) => {
 
     const { navigate } = this.props.navigation
 
-    console.log(item.user)
     return (
       <View
         style={styles.post}
@@ -110,18 +114,18 @@ export default class Login extends React.Component {
 
         <TouchableOpacity
         onPress={() => navigate('Profile',{
-          user: item.user,
+          user: post.user,
         }
         )}
         >
           <View style={styles.headerContainer}>
-            {this._renderProfileImage(item.user["profile_image"])}
+            {this._renderProfileImage(post.user.profile_image)}
             <View style={styles.nameLocationContainer}>
-              <Text style={styles.nameText}> {item.user["name"]} </Text>
+              <Text style={styles.nameText}> {post.user.name} </Text>
             </View>
           </View>
         </TouchableOpacity>
-        {this._renderImage(item.image)}
+        {this._renderImage(post.image)}
         <View style={styles.buttonsContainer}>
           <Ionicons
             name="ios-heart-outline"
@@ -144,10 +148,11 @@ export default class Login extends React.Component {
           />
         </View>
         <View style={styles.captionContainer}>
-          {this._renderDescription(item.description)}
+          {this._renderDescription(post.description)}
           <Text style={styles.timeText}> 2hr </Text>
         </View>
       </View>
+      
     );
   }
 
@@ -173,6 +178,7 @@ export default class Login extends React.Component {
           <FlatList
             data={posts}
             style={styles.list}
+            keyExtractor ={(item, post) => post}
             renderItem={({ item }) => this._renderItem({ item })}
           />
         }

@@ -128,7 +128,6 @@ export default class Profile extends Component {
     const { isPostsLoading, posts } = this.state
 
     return (
-
       <ScrollView style={{flexGrow: 1}}>
           {this._renderBannerImage(user.banner_image)}
 
