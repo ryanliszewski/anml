@@ -10,7 +10,9 @@ export default class CreatePost extends Component {
       isLoading: 'false',
     }
   }
- 
+
+  //create post with a picture
+
   async createButtonPressed() {
 
     this.setState({ isLoading: true }) 

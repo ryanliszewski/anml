@@ -6,6 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default class Login extends React.Component {
 
+  static navigationOptions = {
+    title: 'anml'
+  }
+
+
   constructor(props) {
     super(props)
 
@@ -131,14 +136,14 @@ export default class Login extends React.Component {
             name="ios-heart-outline"
             size={30}
             color='#085947'
-            style={{ paddingRight: 8 }}
+            style={{ paddingRight: 16 }}
 
           />
           <Ionicons
             name="ios-chatbubbles-outline"
             size={30}
             color='#085947'
-            style={{ paddingRight: 8 }}
+            style={{ paddingRight: 16 }}
           />
 
           <Ionicons
@@ -148,7 +153,10 @@ export default class Login extends React.Component {
           />
         </View>
         <View style={styles.captionContainer}>
-          {this._renderDescription(post.description)}
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.nameText}>{post.user.name} </Text>
+            {this._renderDescription(post.description)}
+          </View>
           <Text style={styles.timeText}> 2hr </Text>
         </View>
       </View>
@@ -199,6 +207,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 
+  descriptionContainer: {
+    flexDirection: 'row',
+    paddingTop: 10,
+  },
+
   scroll: {
     paddingTop: 30,
     flexGrow: 1,
@@ -211,6 +224,7 @@ const styles = StyleSheet.create({
   nameText: {
     color: '#053e31',
     fontSize: 14,
+    fontWeight: 'bold',
   },
 
   locationText: {
@@ -252,7 +266,6 @@ const styles = StyleSheet.create({
   },
 
   captionText: {
-    paddingTop: 5,
     color: '#053e31',
     fontSize: 14,
   },
