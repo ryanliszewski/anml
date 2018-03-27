@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,7 +9,6 @@ export default class Login extends React.Component {
   static navigationOptions = {
     title: 'anml'
   }
-
 
   constructor(props) {
     super(props)
@@ -37,8 +36,8 @@ export default class Login extends React.Component {
       let responseJSON = null
 
       if (response.status === 200) {
-
         responseJSON = await response.json();
+        console.log(responseJSON)
         this.setState({
           isFeedLoading: false,
           posts: responseJSON,
@@ -74,6 +73,16 @@ export default class Login extends React.Component {
     }
   }
 
+  onCommentButtonPressed = () => {
+
+  }
+
+
+
+  onLikedButtonPressed = () => {
+
+  }
+
   _renderDescription = (description) => {
     if(description){
       return(
@@ -87,7 +96,7 @@ export default class Login extends React.Component {
     if(image){
       return(
         <TouchableOpacity
-          onPress={() => navigate('PostDetail')}
+          onPress={() => navigate('Comments')}
         >
           <View style={styles.imageContainer}>
           <Image
@@ -132,6 +141,10 @@ export default class Login extends React.Component {
         </TouchableOpacity>
         {this._renderImage(post.image)}
         <View style={styles.buttonsContainer}>
+
+        <TouchableOpacity
+          onPress={() => this.onLikedButtonPressed()}
+        >
           <Ionicons
             name="ios-heart-outline"
             size={30}
@@ -139,13 +152,18 @@ export default class Login extends React.Component {
             style={{ paddingRight: 16 }}
 
           />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigate('Comments')}
+        >
           <Ionicons
             name="ios-chatbubbles-outline"
             size={30}
             color='#085947'
             style={{ paddingRight: 16 }}
           />
-
+        </TouchableOpacity>
           <Ionicons
             name="ios-paper-plane-outline"
             size={30}
@@ -153,6 +171,7 @@ export default class Login extends React.Component {
           />
         </View>
         <View style={styles.captionContainer}>
+        
           <View style={styles.descriptionContainer}>
             <Text style={styles.nameText}>{post.user.name} </Text>
             {this._renderDescription(post.description)}

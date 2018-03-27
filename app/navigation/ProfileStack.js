@@ -19,7 +19,7 @@ export default StackNavigator({
   },
 },
 {
-  initialRouteNamt: 'Profile',
+  initialRouteName: 'Profile',
 }
 
 )
