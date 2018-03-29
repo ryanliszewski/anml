@@ -3,8 +3,11 @@ import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, Touchabl
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { selectUser } from '../actions/index';
+import { connect, Provider} from 'react-redux';
+import store from '../reducers/UserReducer';
 
-export default class Login extends React.Component {
+export default class Feed extends React.Component {
 
   static navigationOptions = {
     title: 'anml'
@@ -127,10 +130,11 @@ export default class Login extends React.Component {
       >
 
         <TouchableOpacity
-        onPress={() => navigate('Profile',{
-          user: post.user,
-        }
-        )}
+        // onPress={() => navigate('Profile',{
+        //   user: post.user,
+        // }
+        onPress={() => this.props.selectUser(post.user)}
+        
         >
           <View style={styles.headerContainer}>
             {this._renderProfileImage(post.user.profile_image)}
@@ -189,6 +193,7 @@ export default class Login extends React.Component {
     console.log(!isFeedLoading)
 
     return (
+
       <ScrollView style={styles.scroll}>
 
         {isFeedLoading &&
@@ -218,7 +223,6 @@ export default class Login extends React.Component {
       this.renderContent()
     );
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -296,3 +300,6 @@ const styles = StyleSheet.create({
   }
 
 });
+
+
+
