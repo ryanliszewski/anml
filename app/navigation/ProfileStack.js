@@ -21,5 +21,4 @@ export default StackNavigator({
 {
   initialRouteName: 'Profile',
 }
-
 )

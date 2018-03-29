@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { LinearGradient } from 'expo';
+import { LinearGradient, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 //Components
@@ -29,6 +29,9 @@ export default class Login extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
+
+    this.getUserTest();
+
   }
 
   async pingServer() {
@@ -66,6 +69,8 @@ export default class Login extends React.Component {
 
         responseJSON = await response.json();
         
+        this.saveUser(responseJSON.user)
+
         Alert.alert(
           'Success!',
           'Welcome to anml!',
@@ -87,9 +92,29 @@ export default class Login extends React.Component {
     }
   }
 
+  async saveUser(user){
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+    } catch (error){
+      //error saving data 
+    }
+  }
+
+  async getUserTest(){
+    try {
+      console.log("test")
+      const user = await AsyncStorage.getItem('user')
+      if(user !== null){
+        console.log(user);
+      } 
+    } catch (error){
+      console.log(error);
+    }
+  }
+
   isEnabled = () => {
     const { username, password } = this.state;
-    return username.length > 2 && password.length > 7;
+    return this.validateEmail(username) && password.length > 7;
   }
 
   handleNameInputSubmit() {
