@@ -4,10 +4,11 @@ import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { selectUser } from '../actions/index';
-import { connect, Provider} from 'react-redux';
-import store from '../reducers/UserReducer';
+import {mapStateToProps, mapDispatchToProps} from '../actions/index';
 
-export default class Feed extends React.Component {
+import { connect } from 'react-redux';
+
+class Feed extends Component {
 
   static navigationOptions = {
     title: 'anml'
@@ -115,6 +116,11 @@ export default class Feed extends React.Component {
       )
     }
   }
+  
+  _reduxTest = (user) => {
+    this.props.selectUser(user);
+    console.log(this.props.selectedUser)
+  }
 
   _renderItem = ({ item: post }) => {
 
@@ -133,7 +139,7 @@ export default class Feed extends React.Component {
         // onPress={() => navigate('Profile',{
         //   user: post.user,
         // }
-        onPress={() => this.props.selectUser(post.user)}
+        onPress={() => this._reduxTest(post.user)}
         
         >
           <View style={styles.headerContainer}>
@@ -301,5 +307,6 @@ const styles = StyleSheet.create({
 
 });
 
+export default connect(mapStateToProps, mapDispatchToProps)(Feed)
 
 

@@ -1,24 +1,16 @@
 import { USER_SELECTED } from './types';
-import { NavigationActions } from 'react-navigation';
-import { userSelected } from '../reducers/UserReducer';
 import {connect} from 'react-redux';
 import Feed from '../screens/Feed';
+import { bindActionCreators } from 'redux'
+import React, { Component } from 'react';
 
 
-const mapStateToProps = state =>{
-  user: state
-}
+export const mapStateToProps = state =>({
+  selectedUser: state
+})
 
-const selectUser = user => (
-  (dispatch) => {
-    dispatch({
-      type: USER_SELECTED,
-    });
+export const mapDispatchToProps = (dispatch) => ({
+  selectUser: () => { dispatch({ type: 'INCREMENT' }) },
+})
 
-    // dispatch(NavigationActions.navigate({
-    //   routeName: 'Profile',
-    // }));
-  }
-)
-
-export default connect(mapStateToProps, selectUser)(Feed)
+// export default connect(mapStateToProps, mapDispatchToProps)(Feed)

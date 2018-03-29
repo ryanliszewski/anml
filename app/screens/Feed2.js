@@ -122,7 +122,7 @@ export default class Feed2 extends Component {
       
       <View style={styles.headerContainer}>
         
-        {this._renderProfileImage(post.user["profile_image"])}
+        {this._renderProfileImage(post.user.profile_image)}
 
         <View style={styles.nameLocation}>
           <Text> {post.user["name"]} </Text> 

@@ -2,13 +2,13 @@ import { USER_SELECTED } from '../actions/types';
 import { createStore } from 'redux';
 
 const INITIAL_STATE = {
-  selectUser: null
+  selectedUser: null
 }
 
 export const userSelected = (state = INITIAL_STATE, action) => {
   switch(action.type){
     case USER_SELECTED: 
-      return{...state, selectedUser: action.payload};
+      return Object.assign({}, state, { ...action.selectedUser });
     default: 
       return state;
   }
