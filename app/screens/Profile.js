@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, Animated, Dimensions, AsyncStorage, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,16 +16,31 @@ export default class Profile extends Component {
     this.state = {
       isPostsLoading: true,
       posts: null, 
+      user: null, 
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    // var user = this.props.navigation.state.params.user
+
+    // if(user){
+    //   this.setState({user: user});
+    // } else {
+    //   user = await AsyncStorage.get('user');
+    //   this.setState({user: user});
+    // }
+
+    // console.log(user)
+
     this.getProfilePosts()
+
   }
 
   async getProfilePosts() {
-    const { user } = this.props.navigation.state.params
-
+    
+    var user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user)
+    
     try {
       let response = await fetch(`https://daug-app.herokuapp.com/api/users/${user.id}`,  {
         method: 'GET',
@@ -43,6 +58,7 @@ export default class Profile extends Component {
         this.setState({
           isPostsLoading: false,
           posts: responseJSON.posts,
+          user: user,
         })
       } else {
         responseJSON = await response.json();
@@ -93,7 +109,7 @@ export default class Profile extends Component {
 
   _renderItem = ({item}) => {
 
-    const postSize = Dimensions.get('window').width * (1/ 3);
+    const postSize = Dimensions.get('window').width * (1 / 3);
 
     if(item.image){
       return(
@@ -124,45 +140,50 @@ export default class Profile extends Component {
 
   render() {
     const { navigate } = this.props.navigation
-    const { user } = this.props.navigation.state.params
-    const { isPostsLoading, posts } = this.state
+    const { isPostsLoading, posts, user } = this.state
+
+    this.state.user 
 
     return (
+
       <ScrollView style={{flexGrow: 1}}>
-          {this._renderBannerImage(user.banner_image)}
+        
+        {!isPostsLoading && 
+          <View>
+            {this._renderBannerImage(user.banner_image)}
 
-          <View style={styles.headerContainer}>
-            {this._renderProfileImage(user.profile_image)}
+            <View style={styles.headerContainer}>
+              {this._renderProfileImage(user.profile_image)}
 
-            <View style={styles.labelButtonContainer}>
+              <View style={styles.labelButtonContainer}>
 
-              <View style={styles.labelContainer}>
-                <StatsLabel
-                  stats='1'
-                  title='posts'
-                />
-                <StatsLabel
-                  stats='261'
-                  title='followers'
-                />
-                <StatsLabel
-                  stats='1'
-                  title='following'
-                />
-              </View>
-              <View style={styles.buttonContainer}>
-                <ButtonOutline
-                  title='edit profile'
-                  buttonEnabled={true}
-                  width={160}
-                  height={30}
-                  borderRadius={20}
-                  onPress={() => navigate('EditProfile')}
-                />
+                <View style={styles.labelContainer}>
+                  <StatsLabel
+                    stats='1'
+                    title='posts'
+                  />
+                  <StatsLabel
+                    stats='261'
+                    title='followers'
+                  />
+                  <StatsLabel
+                    stats='1'
+                    title='following'
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <ButtonOutline
+                    title='edit profile'
+                    buttonEnabled={true}
+                    width={160}
+                    height={30}
+                    borderRadius={20}
+                    onPress={() => navigate('EditProfile')}
+                  />
+                </View>
               </View>
             </View>
-          </View>
-        
+          
         {!isPostsLoading &&
           <FlatList
             horizontal={false}
@@ -173,8 +194,12 @@ export default class Profile extends Component {
             renderItem={({item}) => this._renderItem({item})}
           />
         }
-        
+
+          </View>
+        }
+
       </ScrollView>
+      
     );
   }
 }
