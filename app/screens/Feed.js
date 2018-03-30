@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-import { selectUser } from '../actions/index';
-import {mapStateToProps, mapDispatchToProps} from '../actions/index';
-
 import { connect } from 'react-redux';
+import { updateUserDetails } from '../actions/user';
 
 class Feed extends Component {
 
@@ -21,11 +19,19 @@ class Feed extends Component {
       isFeedLoading: true,
       posts: null,
       errors: null,
+      currentUser: null,
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchFeed()
+
+    var currentUser = await AsyncStorage.getItem('user');
+    currentUser = JSON.parse(currentUser)
+    this.setState({ currentUser: currentUser });
+    this.props.dispatch(updateUserDetails(currentUser))
+
+    console.log(this.props.user);
   }
 
   async fetchFeed() {
@@ -41,7 +47,6 @@ class Feed extends Component {
 
       if (response.status === 200) {
         responseJSON = await response.json();
-        console.log(responseJSON)
         this.setState({
           isFeedLoading: false,
           posts: responseJSON,
@@ -64,15 +69,15 @@ class Feed extends Component {
 
   _renderProfileImage = (image) => {
     if (image) {
-      return(
-      <Image
-        source={{ uri: image }}
-        style={{
-          width: 30,
-          height: 30,
-          borderRadius: 15,
-        }}
-      />
+      return (
+        <Image
+          source={{ uri: image }}
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+          }}
+        />
       )
     }
   }
@@ -81,28 +86,56 @@ class Feed extends Component {
 
   }
 
+  onLikedButtonPressed = async (post) => {
 
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/posts/${post}/like/${this.state.currentUser.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
 
-  onLikedButtonPressed = () => {
+      console.log(response.status)
 
-  }
+      let responseJSON = null
 
-  _renderDescription = (description) => {
-    if(description){
-      return(
-        <Text style={styles.captionText}> {description} </Text>
-      )
+      if (response.status === 201) {
+        responseJSON = await response.json();
+        console.log(responseJSON)
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        this.setState({ errors: responseJSON.errors })
+        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+      Alert.alert('Unable to get the feed. Please try again later')
     }
   }
 
-  _renderImage = (image) => {
-    const { navigate } = this.props.navigation
-    if(image){
-      return(
-        <TouchableOpacity
-          onPress={() => navigate('Comments')}
-        >
-          <View style={styles.imageContainer}>
+
+_renderDescription = (description) => {
+  if (description) {
+    return (
+      <Text style={styles.captionText}> {description} </Text>
+    )
+  }
+}
+
+_renderImage = (image) => {
+  const { navigate } = this.props.navigation
+  if (image) {
+    return (
+      <TouchableOpacity
+        onPress={() => navigate('Comments')}
+      >
+        <View style={styles.imageContainer}>
           <Image
             source={{ uri: image }}
             style={{
@@ -111,49 +144,44 @@ class Feed extends Component {
               borderRadius: 60,
             }}
           />
-          </View>
-        </TouchableOpacity>
-      )
-    }
+        </View>
+      </TouchableOpacity>
+    )
   }
-  
-  _reduxTest = (user) => {
-    this.props.selectUser(user);
-    console.log(this.props.selectedUser)
-  }
+}
 
-  _renderItem = ({ item: post }) => {
+_reduxTest = (user) => {
+  this.props.selectUser({ selectedUser: user });
+}
 
-    const { navigate } = this.props.navigation
+_renderItem = ({ item: post }) => {
+  const { navigate } = this.props.navigation
+  return (
+    <View
+      style={styles.post}
+      shadowColor='#829c96'
+      shadowRadius='3'
+      shadowOffset={{ width: 2, height: -2 }}
+      shadowOpacity={0.75}
+    >
 
-    return (
-      <View
-        style={styles.post}
-        shadowColor='#829c96'
-        shadowRadius='3'
-        shadowOffset={{ width: 2, height: -2 }}
-        shadowOpacity={0.75}
+      <TouchableOpacity
+        onPress={() => navigate('Profile', {
+          user: post.user,
+        })}
       >
-
-        <TouchableOpacity
-        // onPress={() => navigate('Profile',{
-        //   user: post.user,
-        // }
-        onPress={() => this._reduxTest(post.user)}
-        
-        >
-          <View style={styles.headerContainer}>
-            {this._renderProfileImage(post.user.profile_image)}
-            <View style={styles.nameLocationContainer}>
-              <Text style={styles.nameText}> {post.user.name} </Text>
-            </View>
+        <View style={styles.headerContainer}>
+          {this._renderProfileImage(post.user.profile_image)}
+          <View style={styles.nameLocationContainer}>
+            <Text style={styles.nameText}> {post.user.name} </Text>
           </View>
-        </TouchableOpacity>
-        {this._renderImage(post.image)}
-        <View style={styles.buttonsContainer}>
-
+        </View>
+      </TouchableOpacity>
+      {this._renderImage(post.image)}
+      
+      <View style={styles.buttonsContainer}>
         <TouchableOpacity
-          onPress={() => this.onLikedButtonPressed()}
+          onPress={() => this.onLikedButtonPressed(post.id)}
         >
           <Ionicons
             name="ios-heart-outline"
@@ -165,7 +193,9 @@ class Feed extends Component {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigate('Comments')}
+          onPress={() => navigate('Comments',{
+          post: post
+        })}
         >
           <Ionicons
             name="ios-chatbubbles-outline"
@@ -174,55 +204,50 @@ class Feed extends Component {
             style={{ paddingRight: 16 }}
           />
         </TouchableOpacity>
-          <Ionicons
-            name="ios-paper-plane-outline"
-            size={30}
-            color='#085947'
-          />
-        </View>
-        <View style={styles.captionContainer}>
-        
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.nameText}>{post.user.name} </Text>
-            {this._renderDescription(post.description)}
-          </View>
-          <Text style={styles.timeText}> 2hr </Text>
-        </View>
+        <Ionicons
+          name="ios-paper-plane-outline"
+          size={30}
+          color='#085947'
+        />
       </View>
+      <View style={styles.captionContainer}>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.nameText}>{post.user.name} </Text>
+          {this._renderDescription(post.description)}
+        </View>
+        <Text style={styles.timeText}> 2hr </Text>
+      </View>
+    </View>
+  );
+}
+
+renderContent() {
+
+  const { isFeedLoading, posts } = this.state
+
+  return (
+
+    <ScrollView style={styles.scroll}>
+
+        {/* <LinearGradient
+          style={styles.container}
+          colors={['#FFEBB7', '#fff9ea']}
+          start={{ x: 0.0, y: 0.0 }}
+          end={{ x: 1.0, y: 1.0 }}
+          locations={[0.1, 0.8]}
+        /> */}
       
-    );
-  }
-
-  renderContent() {
-
-    const { isFeedLoading, posts } = this.state
-    console.log(!isFeedLoading)
-
-    return (
-
-      <ScrollView style={styles.scroll}>
-
-        {isFeedLoading &&
-          <LinearGradient
-            style={styles.container}
-            colors={['#FFEBB7', '#fff9ea']}
-            start={{ x: 0.0, y: 0.0 }}
-            end={{ x: 1.0, y: 1.0 }}
-            locations={[0.1, 0.8]}
-          />
-        }
-
-        {!isFeedLoading &&
-          <FlatList
-            data={posts}
-            style={styles.list}
-            keyExtractor ={(item, post) => post}
-            renderItem={({ item }) => this._renderItem({ item })}
-          />
-        }
-      </ScrollView>
-    );
-  }
+      {!isFeedLoading &&
+        <FlatList
+          data={posts}
+          style={styles.list}
+          keyExtractor={(item, post) => post}
+          renderItem={({ item }) => this._renderItem({ item })}
+        />
+      }
+    </ScrollView>
+  );
+}
 
   render() {
     return (
@@ -230,6 +255,7 @@ class Feed extends Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -307,6 +333,6 @@ const styles = StyleSheet.create({
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feed)
+export default connect(state => state)(Feed)
 
 

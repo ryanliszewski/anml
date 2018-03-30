@@ -6,11 +6,67 @@ export default class componentName extends Component {
   static navigationOptions = {
     tabBarVisible: false,
   }
-  _renderComment = ({ item: comment }) => {
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      isCommentsLoading: true,
+      comments: null
+    }
+  }
+
+  async componentDidMount(){
+    this.fetchComments()
+
+    
+  }
+
+  _renderComment = ({ item: comment }) => {
+    
+  }
+
+  async fetchComments() {
+    
+    const {post} = this.props.navigation
+    
+    try {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/posts/${post.id}/comments`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        },
+      });
+
+      let responseJSON = null
+
+      if (response.status === 200) {
+
+        responseJSON = await response.json();
+
+        this.setState({
+          isCommentsLoading: true,
+
+        })
+      } else {
+        responseJSON = await response.json();
+        const error = responseJSON.message
+
+        this.setState({ errors: responseJSON.errors })
+        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+      }
+    } catch (error) {
+      this.setState({ isLoading: false, response: error })
+
+      console.log(error)
+
+      Alert.alert('Unable to get the feed. Please try again later')
+    }
   }
 
   render() {
+    const {isCommentsLoading, comments } = this.state
+
     return (
       <KeyboardAvoidingView 
         behavior="padding" 
@@ -19,6 +75,14 @@ export default class componentName extends Component {
           <FlatList
           />
         </ScrollView> */}
+
+      {!isCommentsLoading &&
+        <FlatList 
+          data={comments}
+          renderItem={({item}) => this._renderComment({item})}
+        />
+      }
+
         <View style={{ width: '100%', height:Dimensions.get('window').height }}>
           <TextInput style={styles.commentInput} />
           

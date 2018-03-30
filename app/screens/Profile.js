@@ -42,7 +42,7 @@ export default class Profile extends Component {
     user = JSON.parse(user)
     
     try {
-      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${user.id}`,  {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${user.id}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -141,8 +141,6 @@ export default class Profile extends Component {
   render() {
     const { navigate } = this.props.navigation
     const { isPostsLoading, posts, user } = this.state
-
-    this.state.user 
 
     return (
 
