@@ -10,7 +10,7 @@ export default SwitchNavigator(
   {
     Landing: AuthLoading,
     Intro: IntroStack,
-    App: TabNavigator
+    App: TabNavigator,
   },
   {
     initialRouteName: 'Landing',

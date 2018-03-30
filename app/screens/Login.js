@@ -3,14 +3,16 @@ import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux'
 
 //Components
 import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/ButtonOutline';
 import AlertCustom from '../components/Alert';
 import Logo from '../components/Logo';
+import { updateUserDetails } from '../actions/user';
 
-export default class Login extends React.Component {
+class Login extends React.Component {
 
   constructor(props) {
     super(props);
@@ -29,9 +31,6 @@ export default class Login extends React.Component {
     });
 
     this.setState({ fontLoaded: true });
-
-    this.getUserTest();
-
   }
 
   async pingServer() {
@@ -75,7 +74,7 @@ export default class Login extends React.Component {
           'Success!',
           'Welcome to anml!',
           [
-            { text: "Continue", onPress: () => navigate("TabNavigator", {
+            { text: "Continue", onPress: () => navigate("App", {
               user: responseJSON.user
             }
           )}
@@ -94,21 +93,11 @@ export default class Login extends React.Component {
 
   async saveUser(user){
     try {
+      
       await AsyncStorage.setItem('user', JSON.stringify(user));
+      this.props.dispatch(updateUserDetails(user))
     } catch (error){
       //error saving data 
-    }
-  }
-
-  async getUserTest(){
-    try {
-      console.log("test")
-      const user = await AsyncStorage.getItem('user')
-      if(user !== null){
-        console.log(user);
-      } 
-    } catch (error){
-      console.log(error);
     }
   }
 
@@ -221,3 +210,5 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
 });
+
+export default connect(state => state)(Login) 

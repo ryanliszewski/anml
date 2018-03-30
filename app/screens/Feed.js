@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { updateUserDetails } from '../actions/user';
+import Logo from '../components/Logo';
+
 
 class Feed extends Component {
 
-  static navigationOptions = {
-    title: 'anml'
-  }
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+        headerTitle: <Logo width={30} height={30}/>, 
+        headerLeft: <Button title="logout" onPress={() => params.handleLogout(navigation)} />
+    };
+};
 
   constructor(props) {
     super(props)
@@ -19,19 +25,12 @@ class Feed extends Component {
       isFeedLoading: true,
       posts: null,
       errors: null,
-      currentUser: null,
     }
   }
 
   async componentDidMount() {
     this.fetchFeed()
-
-    var currentUser = await AsyncStorage.getItem('user');
-    currentUser = JSON.parse(currentUser)
-    this.setState({ currentUser: currentUser });
-    this.props.dispatch(updateUserDetails(currentUser))
-
-    console.log(this.props.user);
+    this.props.navigation.setParams({handleLogout: this.logoutUser})
   }
 
   async fetchFeed() {
@@ -65,6 +64,11 @@ class Feed extends Component {
 
       Alert.alert('Unable to get the feed. Please try again later')
     }
+  }
+
+  logoutUser(navigation){
+    AsyncStorage.clear()
+    navigation.navigate('Landing')
   }
 
   _renderProfileImage = (image) => {
@@ -148,10 +152,6 @@ _renderImage = (image) => {
       </TouchableOpacity>
     )
   }
-}
-
-_reduxTest = (user) => {
-  this.props.selectUser({ selectedUser: user });
 }
 
 _renderItem = ({ item: post }) => {
@@ -336,3 +336,4 @@ const styles = StyleSheet.create({
 export default connect(state => state)(Feed)
 
 
+ 
