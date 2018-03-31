@@ -1,28 +1,87 @@
 import React, { Component } from 'react';
-import {  View, Text, StyleSheet, TextInput, Button, Alert} from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Alert, CameraRoll, TouchableOpacity } from 'react-native';
+import {ImagePicker} from 'expo';
+import {connect} from 'react-redux';
 
-export default class CreatePost extends Component {
+class CreatePost extends Component {
  
   constructor(props){
     super(props);
 
     this.state = {
       isLoading: 'false',
+      image: null,
     }
+  }
+
+  onLibraryButtonPressed = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+  
+      if (result.cancelled) {
+        console.log('Profile Image cancelled');
+        return;
+      }
+
+      console.log(result)
+  
+      let resizedUri = await new Promise((resolve, reject) => {
+        ImageEditor.cropImage(result.uri,
+          {
+            offset: { x: 0, y: 0 },
+            size: { width: result.width, height: result.height },
+            displaySize: { width: result.width, height: result.height },
+            resizeMode: 'contain',
+          },
+          (uri) => resolve(uri),
+          () => reject(),
+        );
+      });
+  
+      // this gives you a rct-image-store URI or a base64 image tag that
+      // you can use from ImageStore
+  
+      const file = {
+        // `uri` can also be a file system path (i.e. file://)
+        uri: resizedUri,
+        name: `user_${this.props.user}_post_${new Date().getTime()}.png`,
+        type: "image/png"
+      }
+  
+      const options = {
+        keyPrefix: "uploads/",
+        bucket: "daug",
+        region: "us-east-1",
+        accessKey: "AKIAIKG2UJ7AHBKJ5N2Q",
+        secretKey: "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",
+        successActionStatus: 201
+      }
+  
+      RNS3.put(file, options).then(response => {
+        if (response.status !== 201)
+          throw new Error("Failed to upload image to S3");
+  
+        console.log(response.body);
+  
+        this.setState({ image: response.body.postResponse.location });
+
+
+      });
   }
 
   //create post with a picture
 
-  async createButtonPressed() {
+  createButtonPressed = async () =>  {
 
-    this.setState({ isLoading: true }) 
+    const user = this.props 
 
-      const { username, email, password } = this.state
-      const { navigate } = this.props.navigation
 
       var details = {};
 
-      details.description = "Ryan's post";
+      details.description = "Chill";
+      details.image = this.state.image
 
       var formBody = [];
 
@@ -36,7 +95,7 @@ export default class CreatePost extends Component {
       formBody = formBody.join("&");
 
       try {
-        let response = await fetch(`https://daug-app.herokuapp.com/api/users/1/posts`, {
+        let response = await fetch(`https://daug-app.herokuapp.com/api/users/${this.props.user.user.id}/posts`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -87,8 +146,15 @@ export default class CreatePost extends Component {
 
         <Button
           title="create"
-          onPress={this.createButtonPressed.bind(this)}
+           onPress={() => this.createButtonPressed()}
         />
+
+        <TouchableOpacity
+          onPress={() => this.onLibraryButtonPressed()}
+        >
+          <Text> Library</Text>
+
+        </TouchableOpacity>
       </View>
     );
   }
@@ -102,3 +168,5 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
 });
+
+export default connect(state => state)(CreatePost)

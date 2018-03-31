@@ -5,6 +5,7 @@ import PostDetail from '../screens/PostDetail';
 import EditProfile from '../screens/EditProfile';
 
 export default StackNavigator({
+  
 
   Profile: {
     screen: Profile,
@@ -18,5 +19,11 @@ export default StackNavigator({
     screen: EditProfile,
   },
 },
-
+{
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#0E9577'
+    },
+  },
+}
 )
