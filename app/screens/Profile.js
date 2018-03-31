@@ -11,6 +11,15 @@ import ButtonOutline from '../components/ButtonOutline';
 
 class Profile extends Component {
 
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
+    return {
+      headerTitle: params.userName,
+      headerTintColor: '#F1EFB9',
+    };
+  }
+
   constructor(props) {
     super(props);
 
@@ -25,7 +34,8 @@ class Profile extends Component {
     }
   }
 
-  async componentDidMount() {
+  componentDidMount = async() =>  {
+    this.props.navigation.setParams({userName: this.state.user.name})
     this.getProfilePosts()
   }
 
@@ -129,15 +139,13 @@ class Profile extends Component {
 
   render() {
     const { navigate } = this.props.navigation
-    const { isPostsLoading, posts, user } = this.state
-
-    
+    const { isPostsLoading, posts, user, isCurrentUser } = this.state
 
     return (
 
       <ScrollView style={{flexGrow: 1, paddingTop: 30}}>
         
-        {!isPostsLoading && 
+        
           <View>
             {this._renderBannerImage(user.banner_image)}
 
@@ -145,7 +153,7 @@ class Profile extends Component {
               {this._renderProfileImage(user.profile_image)}
 
               <View style={styles.labelButtonContainer}>
-
+              {!isPostsLoading &&
                 <View style={styles.labelContainer}>
                   <StatsLabel
                     stats= {String(posts.length)}
@@ -160,16 +168,19 @@ class Profile extends Component {
                     title='following'
                   />
                 </View>
-                <View style={styles.buttonContainer}>
-                  <ButtonOutline
-                    title='edit profile'
-                    buttonEnabled={true}
-                    width={160}
-                    height={30}
-                    borderRadius={20}
-                    onPress={() => navigate('EditProfile')}
-                  />
-                </View>
+              }
+                {isCurrentUser &&
+                  <View style={styles.buttonContainer}>
+                    <ButtonOutline
+                      title='edit profile'
+                      buttonEnabled={true}
+                      width={160}
+                      height={30}
+                      borderRadius={20}
+                      onPress={() => navigate('EditProfile')}
+                    />
+                  </View>
+                }
               </View>
             </View>
           
@@ -185,7 +196,7 @@ class Profile extends Component {
         }
 
           </View>
-        }
+        
 
       </ScrollView>
       
