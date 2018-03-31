@@ -19,7 +19,6 @@ export default class componentName extends Component {
   async componentDidMount(){
     this.fetchComments()
 
-    
   }
 
   _renderComment = ({ item: comment }) => {

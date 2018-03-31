@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TextInput, Button, Alert, CameraRoll, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, Alert, CameraRoll, TouchableOpacity, ImageEditor } from 'react-native';
 import {ImagePicker} from 'expo';
 import {connect} from 'react-redux';
+import {RNS3} from 'react-native-aws3';
 
 class CreatePost extends Component {
  
@@ -80,7 +81,7 @@ class CreatePost extends Component {
 
       var details = {};
 
-      details.description = "Chill";
+      details.description = "This is really chill.";
       details.image = this.state.image
 
       var formBody = [];

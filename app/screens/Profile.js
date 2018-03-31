@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, Animated, Dimensions, AsyncStorage, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, Animated, Dimensions, AsyncStorage, Alert, Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
+import { updateUserDetails } from '../actions/user'
 
 //Components 
 import StatsLabel from '../components/StatsLabel';
@@ -17,6 +18,7 @@ class Profile extends Component {
     return {
       headerTitle: params.userName,
       headerTintColor: '#F1EFB9',
+      headerRight: <Button title="logout" onPress={() => params.handleLogout()} color='#FFEBB7' />,
     };
   }
 
@@ -24,25 +26,34 @@ class Profile extends Component {
     super(props);
 
     const { user } = this.props.navigation.state.params || this.props.user
-    const isCurrentUser  = this.props.navigation.state.params ? false : true
+    const isCurrentUser = this.props.navigation.state.params ? false : true
 
     this.state = {
       isPostsLoading: true,
-      posts: null, 
+      posts: null,
       user: user,
       isCurrentUser: isCurrentUser,
     }
   }
 
-  componentDidMount = async() =>  {
-    this.props.navigation.setParams({userName: this.state.user.name})
+  componentDidMount = async () => {
+    this.props.navigation.setParams({
+      userName: this.state.user.name,
+      handleLogout: this.logoutUser,
+    })
     this.getProfilePosts()
   }
 
-   getProfilePosts = async () => { 
+  logoutUser = () => {
+    AsyncStorage.clear()
+    this.props.dispatch(updateUserDetails(null))
+    this.props.navigation.navigate('Landing')
+  }
+
+  getProfilePosts = async () => {
 
     try {
-      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${this.state.user.id}`,{
+      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${this.state.user.id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -98,7 +109,6 @@ class Profile extends Component {
             width: 100,
             height: 100,
             borderRadius: 50,
-            top: -30,
             marginLeft: 5,
           }}
         />
@@ -106,14 +116,14 @@ class Profile extends Component {
     }
   }
 
-  _renderItem = ({item}) => {
+  _renderItem = ({ item: post }) => {
 
     const postSize = Dimensions.get('window').width * (1 / 3);
 
-    if(item.image){
-      return(
+    if (post.image) {
+      return (
         <Image
-          source={{uri: item.image}} 
+          source={{ uri: post.image }}
           style={{
             width: postSize,
             height: postSize,
@@ -122,41 +132,38 @@ class Profile extends Component {
         />
       )
     } else {
-      return(
-        <View 
+      return (
+        <View
           style={{
             width: postSize,
-            height: postSize, 
+            height: postSize,
             alignItems: 'center',
             justifyContent: 'center'
           }}
         >
           <Text> Anml </Text>
-        </View> 
+        </View>
       )
     }
   }
-
   render() {
     const { navigate } = this.props.navigation
     const { isPostsLoading, posts, user, isCurrentUser } = this.state
 
     return (
 
-      <ScrollView style={{flexGrow: 1, paddingTop: 30}}>
-        
-        
-          <View>
-            {this._renderBannerImage(user.banner_image)}
+      <ScrollView style={{ flexGrow: 1, paddingTop: 30 }}>
+        <View>
+          {this._renderBannerImage(user.banner_image)}
 
-            <View style={styles.headerContainer}>
-              {this._renderProfileImage(user.profile_image)}
+          <View style={styles.headerContainer}>
+            {this._renderProfileImage(user.profile_image)}
 
-              <View style={styles.labelButtonContainer}>
+            <View style={styles.labelButtonContainer}>
               {!isPostsLoading &&
                 <View style={styles.labelContainer}>
                   <StatsLabel
-                    stats= {String(posts.length)}
+                    stats={String(posts.length)}
                     title='posts'
                   />
                   <StatsLabel
@@ -169,37 +176,35 @@ class Profile extends Component {
                   />
                 </View>
               }
-                {isCurrentUser &&
-                  <View style={styles.buttonContainer}>
-                    <ButtonOutline
-                      title='edit profile'
-                      buttonEnabled={true}
-                      width={160}
-                      height={30}
-                      borderRadius={20}
-                      onPress={() => navigate('EditProfile')}
-                    />
-                  </View>
-                }
-              </View>
+              {isCurrentUser &&
+                <View style={styles.buttonContainer}>
+                  <ButtonOutline
+                    title='edit profile'
+                    buttonEnabled={true}
+                    width={160}
+                    height={30}
+                    borderRadius={20}
+                    onPress={() => navigate('EditProfile')}
+                  />
+                </View>
+              }
             </View>
-          
-        {!isPostsLoading &&
-          <FlatList
-            horizontal={false}
-            numColumns={3}
-            data={posts}
-            style={styles.posts}
-            automaticallyAdjustContentInsets={false}
-            renderItem={({item}) => this._renderItem({item})}
-          />
-        }
-
           </View>
-        
 
+          {!isPostsLoading &&
+            <FlatList
+              horizontal={false}
+              numColumns={3}
+              data={posts}
+              style={styles.posts}
+              keyExtractor={(item, post) => post}
+              automaticallyAdjustContentInsets={false}
+              renderItem={({ item }) => this._renderItem({ item })}
+            />
+          }
+        </View>
       </ScrollView>
-      
+
     );
   }
 }

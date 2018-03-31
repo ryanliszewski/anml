@@ -15,7 +15,6 @@ class Feed extends Component {
 
     return {
         headerTitle: <Logo width={30} height={30}/>, 
-        headerLeft: <Button title="logout" onPress={() => params.handleLogout()} color='#FFEBB7' />,
     };
 };
 
@@ -31,7 +30,6 @@ class Feed extends Component {
 
   async componentDidMount() {
     this.fetchFeed()
-    this.props.navigation.setParams({handleLogout: this.logoutUser})
   }
 
   async fetchFeed() {
@@ -67,11 +65,6 @@ class Feed extends Component {
     }
   }
 
-  logoutUser = () => {
-    AsyncStorage.clear()
-    this.props.dispatch(updateUserDetails(null))
-    this.props.navigation.navigate('Landing')
-  }
 
   _renderProfileImage = (image) => {
     if (image) {
