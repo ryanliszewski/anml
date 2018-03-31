@@ -3,46 +3,36 @@ import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, Animated
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux'
 
 //Components 
 import StatsLabel from '../components/StatsLabel';
 import ButtonOutline from '../components/ButtonOutline';
 
-export default class Profile extends Component {
+class Profile extends Component {
 
   constructor(props) {
     super(props);
 
+    const { user } = this.props.navigation.state.params || this.props.user
+    const isCurrentUser  = this.props.navigation.state.params ? false : true
+
     this.state = {
       isPostsLoading: true,
       posts: null, 
-      user: null, 
+      user: user,
+      isCurrentUser: isCurrentUser,
     }
   }
 
   async componentDidMount() {
-    // var user = this.props.navigation.state.params.user
-
-    // if(user){
-    //   this.setState({user: user});
-    // } else {
-    //   user = await AsyncStorage.get('user');
-    //   this.setState({user: user});
-    // }
-
-    // console.log(user)
-
     this.getProfilePosts()
-
   }
 
-  async getProfilePosts() {
-    
-    var user = await AsyncStorage.getItem('user');
-    user = JSON.parse(user)
-    
+   getProfilePosts = async () => { 
+
     try {
-      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${user.id}`,{
+      let response = await fetch(`https://daug-app.herokuapp.com/api/users/${this.state.user.id}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -58,7 +48,6 @@ export default class Profile extends Component {
         this.setState({
           isPostsLoading: false,
           posts: responseJSON.posts,
-          user: user,
         })
       } else {
         responseJSON = await response.json();
@@ -68,7 +57,7 @@ export default class Profile extends Component {
         Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
       }
     } catch (error) {
-      this.setState({ isLoading: false, response: error })
+      this.setState({ isPostsLoading: false, response: error })
 
       console.log(error)
 
@@ -142,9 +131,11 @@ export default class Profile extends Component {
     const { navigate } = this.props.navigation
     const { isPostsLoading, posts, user } = this.state
 
+    
+
     return (
 
-      <ScrollView style={{flexGrow: 1}}>
+      <ScrollView style={{flexGrow: 1, paddingTop: 30}}>
         
         {!isPostsLoading && 
           <View>
@@ -157,7 +148,7 @@ export default class Profile extends Component {
 
                 <View style={styles.labelContainer}>
                   <StatsLabel
-                    stats='1'
+                    stats= {String(posts.length)}
                     title='posts'
                   />
                   <StatsLabel
@@ -238,3 +229,5 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   }
 })
+
+export default connect(state => state)(Profile)

@@ -93,7 +93,6 @@ class Login extends React.Component {
 
   async saveUser(user){
     try {
-      
       await AsyncStorage.setItem('user', JSON.stringify(user));
       this.props.dispatch(updateUserDetails(user))
     } catch (error){

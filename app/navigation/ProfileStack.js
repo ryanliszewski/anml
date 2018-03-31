@@ -18,7 +18,5 @@ export default StackNavigator({
     screen: EditProfile,
   },
 },
-{
-  initialRouteName: 'Profile',
-}
+
 )

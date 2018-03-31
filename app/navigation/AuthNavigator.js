@@ -1,6 +1,5 @@
 import { SwitchNavigator } from 'react-navigation';
 
-
 import RootNavigator from './RootNavigator'; 
 import IntroStack from './IntroStack';
 import TabNavigator from './TabNavigator';

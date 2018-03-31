@@ -12,16 +12,23 @@ export default StackNavigator({
     screen: Comments,
   },
 
-  Feed: {
-    screen: Feed,
-  },
-  
   Profile: {
     screen: Profile,
   },
 
+  Feed: {
+    screen: Feed,
+  },
+
 },
 {
+
+  navigationOptions: {
+    headerStyle: {
+      backgroundColor: '#0E9577'
+    },
+  },
+
   initialRouteName: 'Feed'
 }
 )

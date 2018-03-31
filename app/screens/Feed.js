@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,9 +12,10 @@ class Feed extends Component {
 
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
+
     return {
         headerTitle: <Logo width={30} height={30}/>, 
-        headerLeft: <Button title="logout" onPress={() => params.handleLogout(navigation)} />
+        headerLeft: <Button title="logout" onPress={() => params.handleLogout()} color='#FFEBB7' />,
     };
 };
 
@@ -66,9 +67,10 @@ class Feed extends Component {
     }
   }
 
-  logoutUser(navigation){
+  logoutUser = () => {
     AsyncStorage.clear()
-    navigation.navigate('Landing')
+    this.props.dispatch(updateUserDetails(null))
+    this.props.navigation.navigate('Landing')
   }
 
   _renderProfileImage = (image) => {
@@ -100,13 +102,10 @@ class Feed extends Component {
         },
       });
 
-      console.log(response.status)
-
       let responseJSON = null
 
       if (response.status === 201) {
         responseJSON = await response.json();
-        console.log(responseJSON)
       } else {
         responseJSON = await response.json();
         const error = responseJSON.message
@@ -123,6 +122,16 @@ class Feed extends Component {
     }
   }
 
+  _renderLikes = (likes) => {
+
+    const likeCount = likes.length
+
+    if(likes.length > 0){
+      return(
+        <Text style={styles.likesText}>{likeCount} likes </Text>
+      );
+    }
+  }
 
 _renderDescription = (description) => {
   if (description) {
@@ -143,9 +152,8 @@ _renderImage = (image) => {
           <Image
             source={{ uri: image }}
             style={{
-              width: 400,
-              height: 400,
-              borderRadius: 60,
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').width,
             }}
           />
         </View>
@@ -211,6 +219,7 @@ _renderItem = ({ item: post }) => {
         />
       </View>
       <View style={styles.captionContainer}>
+      {this._renderLikes(post.likes)}
         <View style={styles.descriptionContainer}>
           <Text style={styles.nameText}>{post.user.name} </Text>
           {this._renderDescription(post.description)}
@@ -228,15 +237,6 @@ renderContent() {
   return (
 
     <ScrollView style={styles.scroll}>
-
-        {/* <LinearGradient
-          style={styles.container}
-          colors={['#FFEBB7', '#fff9ea']}
-          start={{ x: 0.0, y: 0.0 }}
-          end={{ x: 1.0, y: 1.0 }}
-          locations={[0.1, 0.8]}
-        /> */}
-      
       {!isFeedLoading &&
         <FlatList
           data={posts}
@@ -274,6 +274,13 @@ const styles = StyleSheet.create({
 
   nameLocationContainer: {
     paddingLeft: 5,
+  },
+
+  likesText: {
+    color: '#053e31',
+    fontSize: 14,
+    fontWeight: 'bold',
+    paddingTop: 10,
   },
 
   nameText: {
@@ -334,6 +341,3 @@ const styles = StyleSheet.create({
 });
 
 export default connect(state => state)(Feed)
-
-
- 

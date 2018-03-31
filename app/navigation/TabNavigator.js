@@ -7,19 +7,19 @@ import ProfileStack from './ProfileStack';
 
 export default TabNavigator({
 
-    Feed: {
+    FeedTab: {
       screen: SocialStack,
     },
 
-    CreatePost: {
+    CreatePostTab: {
       screen: CreatePost
     },
 
-    Profile: {
-      screen: Profile
+    ProfileTab: {
+      screen: ProfileStack
     },
 
 }, {
-  initialRouteName: 'Feed', 
+  initialRouteName: 'FeedTab', 
 }
 );

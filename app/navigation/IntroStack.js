@@ -15,7 +15,6 @@ export default StackNavigator({
     screen: Login,
   }
 },
-
 {
   initialRouteName: 'Landing',
   mode: 'modal',
