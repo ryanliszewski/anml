@@ -10,6 +10,8 @@ import { updateUserDetails } from '../actions/user';
 import Logo from '../components/Logo';
 import Post from '../components/Post';
 
+const window = Dimensions.get('window');
+
 class Feed extends Component {
 
   static navigationOptions = ({ navigation }) => {
@@ -118,19 +120,17 @@ _renderItem = ({ item: post }) => {
     <Post
       post={post}
       imageDim={{
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').width,
+        width: window.width,
+        height: window.width,
       }}
     />
   );
-}
+} 
 
 renderContent() {
-
   const { isFeedLoading, posts } = this.state
 
   return (
-
     <ScrollView style={styles.scroll}>
       {!isFeedLoading &&
         <FlatList
@@ -143,7 +143,6 @@ renderContent() {
     </ScrollView>
   );
 }
-
   render() {
     return (
       this.renderContent()
