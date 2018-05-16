@@ -3,14 +3,12 @@ import { Ionicons } from '@expo/vector-icons';
 import  propTypes  from 'prop-types';
 import React from 'react';  
 
-
 const Post = (props) => {
 
   _renderImage = () => {
    
     const { imageDim, onImagePressed } = props; 
 
-    console.log(...props.imageDim)
     if(props.post.image){
       return (
         <TouchableOpacity 
@@ -34,6 +32,17 @@ const Post = (props) => {
       return (
         <Text style={styles.captionText}> { description } </Text>
       )
+    }
+  }
+  
+  _renderLikes = (likes) => {
+
+    const likeCount = props.post.likes.length
+
+    if(likeCount > 0){
+      return(
+        <Text style={styles.likesText}>{likeCount} likes </Text>
+      );
     }
   }
 
@@ -92,7 +101,6 @@ const Post = (props) => {
               style={{ paddingRight: 16 }}
             />
           </TouchableOpacity>
-
           <TouchableOpacity
             onPress={props.onCommentPressed}
           >
@@ -110,6 +118,7 @@ const Post = (props) => {
           />
         </View>
         <View style={styles.captionContainer}>
+        {this._renderLikes()}
           <View style={styles.descriptionContainer}>
             <Text style={styles.nameText}> {props.post.user.name} </Text>
             {this._renderDescription()}

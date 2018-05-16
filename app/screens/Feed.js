@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, 
   Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { LinearGradient } from 'expo';
+import { LinearGradient, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { updateUserDetails } from '../actions/user';
@@ -26,14 +26,22 @@ class Feed extends Component {
     super(props)
 
     this.state = {
-      isFeedLoading: true,
+      feedLoaded: false,
       posts: null,
       errors: null,
+      fontLoaded: false,
     }
   }
 
   async componentDidMount() {
     this.fetchFeed()
+
+    await Font.loadAsync({
+      'open-sans-bold': require('../../assets/fonts/open-sans/OpenSans-Bold.ttf'),
+    });
+
+    this.setState({ fontLoaded: true });
+
   }
 
   async fetchFeed() {
@@ -50,7 +58,7 @@ class Feed extends Component {
 
       if (response.status === 200) {
         this.setState({
-          isFeedLoading: false,
+          feedLoaded: true,
           posts: responseJSON,
         })
       } else {
@@ -60,7 +68,7 @@ class Feed extends Component {
         Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
       }
     } catch (error) {
-      this.setState({ isLoading: false, response: error })
+      this.setState({ feedLoaded: true, response: error })
 
       console.log(error)
 
@@ -102,21 +110,9 @@ class Feed extends Component {
     }
   }
 
-  _renderLikes = (likes) => {
-
-    const likeCount = likes.length
-
-    if(likes.length > 0){
-      return(
-        <Text style={styles.likesText}>{likeCount} likes </Text>
-      );
-    }
-  }
-
 _renderItem = ({ item: post }) => {
   const { navigate } = this.props.navigation
   return (
-
     <Post
       post={post}
       imageDim={{
@@ -127,12 +123,12 @@ _renderItem = ({ item: post }) => {
   );
 } 
 
-renderContent() {
-  const { isFeedLoading, posts } = this.state
+_renderContent() {
+  const { feedLoaded, posts, fontLoaded } = this.state
 
   return (
     <ScrollView style={styles.scroll}>
-      {!isFeedLoading &&
+      {feedLoaded && fontLoaded &&
         <FlatList
           data={posts}
           style={styles.list}
@@ -145,7 +141,7 @@ renderContent() {
 }
   render() {
     return (
-      this.renderContent()
+      this._renderContent()
     );
   }
 }

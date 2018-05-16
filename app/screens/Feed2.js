@@ -1,3 +1,9 @@
+/*
+* @file Feed2.js 
+* Component was used to for a code walkthrough. 
+* Author: Ryan Liszewski 
+*/
+
 import React, { Component }  from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity } from 'react-native';
 import {  Icon } from 'react-native-elements';
