@@ -10,7 +10,17 @@ import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/ButtonOutline';
 import AlertCustom from '../components/Alert';
 import Logo from '../components/Logo';
+
+//redux actions
 import { updateUserDetails } from '../actions/user';
+
+//validation utilities
+import { 
+  validEmail, 
+  validPassword, 
+  VALID_PASSWORD, 
+  VALID_EMAIL
+} from '../utils/validation';
 
 const window = Dimensions.get('window');
 
@@ -103,7 +113,8 @@ class Login extends React.Component {
   }
 
   isEnabled = () => {
-    return this.validEmail() && this.validPassword();
+    const { email, password } = this.state; 
+    return validEmail(email) && validPassword(password);
   }
 
   handleNameInputSubmit() {
@@ -116,19 +127,12 @@ class Login extends React.Component {
     }
   }
 
-  validEmail = () => {
-    const { email } = this.state;
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  };
-
-  validPassword = () => {
-    const { password } = this.state;
-    return password.length > 7
-  }
-
   renderContent() {
-    const { screen, fontLoaded } = this.state;
+    const { 
+      screen, 
+      fontLoaded,
+      email,
+      password } = this.state;
 
       return (
         <LinearGradient
@@ -153,8 +157,8 @@ class Login extends React.Component {
                 value={this.state.email}
                 onChangeText={(text) => this.setState({ email: text })}
                 keyType='next'
-                error= "enter a valid email"
-                valid={this.validEmail()}
+                error= {VALID_EMAIL}
+                valid={validEmail(email)}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -166,12 +170,12 @@ class Login extends React.Component {
                 onChangeText={(text) => this.setState({ password: text })}
                 keyType='go'
                 onSubmitEditing={() => this.handlePress()}
-                error="password must be greater then 7"
-                valid={this.validPassword()}
+                error= {VALID_PASSWORD}
+                valid={validPassword(password)}
               />
             </View>
             <ButtonOutline
-              style={{ marginTop: 10}}
+              style={{ marginTop: 20}}
               buttonEnabled={this.isEnabled()}
               title='Login'
               onPress={this.handlePress}
@@ -213,10 +217,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 40,
   },
-  
-  button: {
-    marginTop: 20,
-  }
+
 });
 
 export default connect(state => state)(Login) 

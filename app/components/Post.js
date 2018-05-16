@@ -130,13 +130,13 @@ const Post = (props) => {
 }
 
 Post.propTypes = {
-  // onLikedPressed: propTypes.func,
-  // onCommentPressed: propTypes.func, 
-  // onProfilePressed: propTypes.func, 
-  // onImagePressed: propTypes.func,
-  // user: propTypes.object, 
-    post: propTypes.object.required,
-    imageDim: ViewPropTypes.style
+  onLikedPressed: propTypes.func,
+  onCommentPressed: propTypes.func, 
+  onProfilePressed: propTypes.func, 
+  onImagePressed: propTypes.func,
+  user: propTypes.object, 
+  post: propTypes.object.required,
+  imageDim: ViewPropTypes.style
 }
 
 const styles = StyleSheet.create({
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     paddingTop: 10,
+    paddingLeft: 5,
   },
 
   nameText: {
@@ -191,7 +192,6 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
     paddingTop: 10,
-    paddingLeft: 5,
   },
 
   imageContainer: {
@@ -206,7 +206,6 @@ const styles = StyleSheet.create({
 
   captionContainer: {
     paddingBottom: 5,
-    paddingLeft: 5,
   },
 
   captionText: {

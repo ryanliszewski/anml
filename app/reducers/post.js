@@ -6,5 +6,7 @@ export default function (state = INITIAL_STATE, action) {
   switch(action.type){
     case UPDATE_SELECTED_POST:
       return updateSelectedPost(state,action);
+    default:
+      return state;
   }
 }

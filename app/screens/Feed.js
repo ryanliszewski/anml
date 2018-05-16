@@ -112,6 +112,7 @@ class Feed extends Component {
 
 _renderItem = ({ item: post }) => {
   const { navigate } = this.props.navigation
+  
   return (
     <Post
       post={post}
@@ -119,6 +120,7 @@ _renderItem = ({ item: post }) => {
         width: window.width,
         height: window.width,
       }}
+      onLikedButtonPressed={() => this.onLikedButtonPressed(post)}
     />
   );
 } 

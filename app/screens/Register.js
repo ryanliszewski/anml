@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
-import { StyleSheet, Alert, View, Platform } from 'react-native';
+import { StyleSheet, Alert, View, Platform, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo';
-
-//Screens 
-import Feed from './Feed.js'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 //Components
 import InputBottomBorder from '../components/Input';
 import ButtonOutline from '../components/ButtonOutline';
 import Logo from '../components/Logo';
+
+//validation utilities 
+import { 
+  validEmail, 
+  validPassword, 
+  validUsername,
+  VALID_PASSWORD, 
+  VALID_EMAIL,
+  VALID_USERNAME
+} from '../utils/validation';
+
+let window = Dimensions.get('window');
 
 export default class Register extends Component {
 
@@ -18,32 +28,32 @@ export default class Register extends Component {
       email: '',
       username: '',
       password: '',
-      screen: null,
       isLoading: false,
     }
   }
 
   isEnabled = () => {
     const { email, username, password } = this.state;
-    return email.length > 7 && username.length > 2 && password.length > 7;
+    return validEmail(email) && validUsername(username) && validPassword(password);
   }
 
   handlePress = () => {
-    const { username, enabled } = this.state
-
-    if (this.isEnabled()) {
-      Alert.alert(
-        `Registration was successful`,
-        `Welcome to anml, ${username}`,
-        [
-          { text: 'OK', onPress: () => this.setState({ screen: 'feed' }) },
-        ],
-
-        { cancelable: false })
+    if(this.isEnabled()){
+      this.pingServer()
     }
   }
 
-  async signupButtonPressed() {
+  async saveUser(user){
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(user));
+      this.props.dispatch(updateUserDetails(user))
+    } catch (error){
+      //error saving data 
+    }
+  }
+
+  //POST /auth/signup 
+  async pingServer() {
 
     this.setState({ isLoading: true }) 
 
@@ -82,22 +92,19 @@ export default class Register extends Component {
 
           responseJSON = await response.json();
 
-          console.log(responseJSON)
+          this.saveUser(responseJSON.user)
 
-          this.setState({ isLoading: false })
           Alert.alert(
             'Signed Up!',
             'You have successfully signed up!',
             [
-              { text: "Continue", onPress: () => navigate("TabNavigator") }
+              { text: "Continue", onPress: () => navigate("App") }
             ],
             { cancelable: false }
           )
         } else {
           responseJSON = await response.json();
           const error = responseJSON.message
-
-          console.log(responseJSON)
 
           this.setState({ isLoading: false, errors: responseJSON.errors })
           Alert.alert('Sign up failed!', `Unable to signup.. ${error}!`)
@@ -112,11 +119,14 @@ export default class Register extends Component {
     }
 
   renderContent() {
-    const { buttonEnabled, screen } = this.state;
+    const { 
+      buttonEnabled, 
+      password, 
+      email,
+      username } = this.state;
 
-    if (screen === 'feed') {
-      return <Feed />
-    } else {
+      console.log(email)
+
       return (
         <LinearGradient
           style={styles.mainContainer}
@@ -141,6 +151,8 @@ export default class Register extends Component {
                 value={this.state.email}
                 onChangeText={(text) => this.setState({ email: text })}
                 keyType='next'
+                error={VALID_EMAIL}
+                valid={validEmail(email)}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -151,6 +163,8 @@ export default class Register extends Component {
                 value={this.state.username}
                 onChangeText={(text) => this.setState({ username: text })}
                 keyType='next'
+                error={VALID_USERNAME}
+                valid={validUsername(username)}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -161,13 +175,14 @@ export default class Register extends Component {
                 value={this.state.password}
                 onChangeText={(text) => this.setState({ password: text })}
                 keyType='go'
-                onSubmitEditing={() => this.handlePress()}
+                error= {VALID_PASSWORD}
+                valid={validPassword(password)}
               />
             </View>
             <ButtonOutline
               buttonEnabled={this.isEnabled()}
               title='Login'
-              onPress={this.isEnabled() && this.signupButtonPressed.bind(this)}
+              onPress={this.handlePress}
               height={40}
               width={160}
               borderRadius={40}
@@ -176,7 +191,7 @@ export default class Register extends Component {
         </LinearGradient>
       );
     }
-  }
+  
 
   render() {
     return (
@@ -192,7 +207,9 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    paddingBottom: 20,
+    marginBottom: 20,
+    width: window.width * 0.7,
+    height: window.height * 0.05,
   },
 
   form: {
@@ -200,6 +217,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
+
   },
 
   logoContainer: {
