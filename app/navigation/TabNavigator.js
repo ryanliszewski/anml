@@ -15,7 +15,7 @@ import ProfileStack from './ProfileStack';
 
 const FeedTabIcon = ({ tintColor }) => (
   <Ionicons 
-  name="ios-home-outline"
+  name="ios-home"
   size={Platform.OS === 'ios' ? 25 : 30}
   color={tintColor}
   />  
@@ -27,7 +27,7 @@ FeedTabIcon.propTypes = {
 
 const CreatePostTabIcon = ({ tintColor }) => (
   <Ionicons 
-  name={"ios-camera-outline"}
+  name={"ios-camera"}
   size={Platform.OS === 'ios' ? 25 : 30}
   color={tintColor}
   />  
@@ -39,7 +39,7 @@ CreatePostTabIcon.propTypes = {
 
 const ProfileTabIcon = ({ tintColor }) => (
   <Ionicons 
-  name={"ios-person-outline"}
+  name={"ios-person"}
   size={Platform.OS === 'ios' ? 25 : 30}
   color={tintColor}
   />  
@@ -55,7 +55,7 @@ export default TabNavigator({
     FeedTab: {
       screen: SocialStack,
       navigationOptions:{
-        label: 'Feed',
+        tabBarLabel: 'Feed',
         tabBarIcon: FeedTabIcon
       }
     },
@@ -63,7 +63,7 @@ export default TabNavigator({
     CreatePostTab: {
       screen: CreatePost,
       navigationOptions: {
-        label: 'Add Post',
+        tabBarLabel: 'Add Post',
         tabBarIcon: CreatePostTabIcon
       }
     },
@@ -71,7 +71,7 @@ export default TabNavigator({
     ProfileTab: {
       screen: ProfileStack,
       navigationOptions: {
-        label: 'Profile',
+        tabBarLabel: 'Profile',
         tabBarIcon: ProfileTabIcon
       }
     },
@@ -82,7 +82,7 @@ export default TabNavigator({
     showIcon: true,
     showLabel: true,
     activeTintColor: '#0E9577',
-    inactiveTintColor: '#FFEBB7',
+    inactiveTintColor: '#042921',
     style: {
       backgroundColor: '#FFF',
       padding: Platform.OS === 'ios' ? 5 : 0,
