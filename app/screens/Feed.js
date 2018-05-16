@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, 
-  Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button, Dimensions } from 'react-native';
+import { 
+  StyleSheet, 
+  View, 
+  ScrollView, 
+  FlatList, 
+  Platform, 
+  Alert, 
+  Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { updateUserDetails } from '../actions/user';
+import { updateSelectedUser } from '../actions/user';
 
 import Logo from '../components/Logo';
 import Post from '../components/Post';
@@ -42,6 +48,12 @@ class Feed extends Component {
 
     this.setState({ fontLoaded: true });
 
+  }
+
+  onProfilePressed = (user) => {
+
+    this.props.dispatch(updateSelectedUser(user));
+    this.props.navigation.navigate('Profile');
   }
 
   async fetchFeed() {
@@ -118,6 +130,7 @@ _renderItem = ({ item: post }) => {
         height: window.width,
       }}
       onLikedPressed={() => this.onLikedButtonPressed(post)}
+      onProfilePressed={() => this.onProfilePressed(post.user)}
     />
   );
 } 

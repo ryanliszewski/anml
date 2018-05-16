@@ -1,6 +1,6 @@
 import { INITIAL_STATE } from '../store/initial_state/user';
 
-import { UPDATE_USER_DETAILS } from '../actions/user';
+import { UPDATE_USER_DETAILS} from '../actions/user';
 
 import updateUserDetails from './user/update_user_details';
 

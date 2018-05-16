@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux'
-import { updateUserDetails } from '../actions/user'
+import { updateUserDetails, updateSelectedUser } from '../actions/user'
 
 //Components 
 import StatsLabel from '../components/StatsLabel';
@@ -25,14 +25,14 @@ class Profile extends Component {
   constructor(props) {
     super(props);
 
-    const { user } = this.props.navigation.state.params || this.props.user
-    const isCurrentUser = this.props.navigation.state.params ? false : true
+    //Fix redux to have selected user
+    const {selectedUser} = this.props.profile
+    const user = selectedUser ? selectedUser : this.props.user.user
 
     this.state = {
       isPostsLoading: true,
       posts: null,
       user: user,
-      isCurrentUser: isCurrentUser,
     }
   }
 
@@ -42,6 +42,10 @@ class Profile extends Component {
       handleLogout: this.logoutUser,
     })
     this.getProfilePosts()
+  }
+
+  componentWillUnmount = () => {
+    this.props.dispatch(updateSelectedUser(null))
   }
 
   logoutUser = () => {
@@ -148,7 +152,8 @@ class Profile extends Component {
   }
   render() {
     const { navigate } = this.props.navigation
-    const { isPostsLoading, posts, user, isCurrentUser } = this.state
+    const { selectedUser } = this.props.profile
+    const { isPostsLoading, posts, user } = this.state
 
     return (
 
@@ -176,7 +181,7 @@ class Profile extends Component {
                   />
                 </View>
               }
-              {isCurrentUser &&
+              { selectedUser &&
                 <View style={styles.buttonContainer}>
                   <ButtonOutline
                     title='edit profile'
