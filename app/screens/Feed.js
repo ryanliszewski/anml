@@ -81,32 +81,29 @@ class Feed extends Component {
   }
 
   onLikedButtonPressed = async (post) => {
+    const { user } = this.props.user; 
 
     try {
-      let response = await fetch(`https://daug-app.herokuapp.com/api/posts/${post}/like/${this.state.currentUser.id}`, {
+      let response = await fetch(`https://daug-app.herokuapp.com/api/posts/${post.id}/like/${user.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         },
       });
-
       let responseJSON = null
 
       if (response.status === 201) {
-        responseJSON = await response.json();
+        Alert.alert("You liked a picture");
       } else {
         responseJSON = await response.json();
         const error = responseJSON.message
 
         this.setState({ errors: responseJSON.errors })
-        Alert.alert('Unable to get your feed', `Reason.. ${error}!`)
+        Alert.alert('Unable to like the picture', `Reason.. ${error}!`)
       }
     } catch (error) {
       this.setState({ isLoading: false, response: error })
-
-      console.log(error)
-
-      Alert.alert('Unable to get the feed. Please try again later')
+      Alert.alert('Unable to like the picture')
     }
   }
 
@@ -120,7 +117,7 @@ _renderItem = ({ item: post }) => {
         width: window.width,
         height: window.width,
       }}
-      onLikedButtonPressed={() => this.onLikedButtonPressed(post)}
+      onLikedPressed={() => this.onLikedButtonPressed(post)}
     />
   );
 } 
