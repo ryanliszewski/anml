@@ -1,19 +1,14 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, TextInput} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Platform, ViewPropTypes} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import propTypes from 'prop-types';
 
-
 const InputBottomBorder = (props) => {
   
-  focus = () => {
-    this.focus()
-  }
-
   renderError = () => {
-    const { error } = props;
+    const { error, value, valid } = props;
 
-    if(props.error && props.value){
+    if(error && value && !valid ){
       return( 
         <Text style={[styles.error, {fontFamily: props.font}]}> 
           {error} 
@@ -21,6 +16,41 @@ const InputBottomBorder = (props) => {
       )
     }
   }
+
+  renderInput = () => {
+    const  
+      { font, 
+      value, 
+      securedText, 
+      placeholder, 
+      onChangeText, 
+      onChange, 
+      keyType, 
+      onSubmitEditing } = props;
+
+      const isAndroid = Platform.OS === 'ios' ? false : true; 
+
+    return (
+        <TextInput
+        style={[
+           styles.input,
+           isAndroid ? borderBottomWidth: 0,
+          {fontFamily: font},
+          {...props.style}
+        ]}
+        value={value}
+        secureTextEntry={securedText}
+        placeholder={placeholder}
+        placeholderTextColor='#829c96'
+        onChangeText={onChangeText}
+        allowFontScaling={true}
+        onChange={onChange}
+        returnKeyType={keyType}
+        onSubmitEditing={onSubmitEditing}
+      />   
+    )
+  }
+
 
 return(  
   <View style={styles.container}>
@@ -31,21 +61,9 @@ return(
         color='#FBFAE1'
         style={styles.icon}
         />  
-      <TextInput
-          style={[styles.input,
-            {fontFamily: props.font}]}
-          value={props.value}
-          secureTextEntry={props.securedText}
-          placeholder={props.placeholder}
-          placeholderTextColor='#829c96'
-          onChangeText={props.onChangeText}
-          allowFontScaling={true}
-          onChange={props.onChange}
-          returnKeyType={props.keyType}
-          onSubmitEditing={props.onSubmitEditing}
-        />     
+        { this.renderInput()}
     </View>
-    {this.renderError()}
+    { this.renderError() }
   </View>    
   );
 }
@@ -62,7 +80,8 @@ InputBottomBorder.propTypes = {
   focus: propTypes.bool, 
   font: propTypes.string,
   error: propTypes.string,
-  pattern: propTypes.string, 
+  valid: propTypes.bool,
+  style: ViewPropTypes.style
 }
 
 const styles = StyleSheet.create({
@@ -77,8 +96,10 @@ const styles = StyleSheet.create({
   },
 
   error: {
-    fontSize: 12,
+    fontSize: 10,
     color: '#930d2c',
+    paddingLeft: 5,
+    paddingTop: 1,
   }, 
 
   inputContainer: {
@@ -87,6 +108,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: '#F1EFB9',
   },
+
   icon: {
     paddingLeft: 5,
   },

@@ -17,7 +17,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      email: '',
       password: '',
       focusPasswordInput: false,
       screen: null,
@@ -34,11 +34,11 @@ class Login extends React.Component {
   }
 
   async pingServer() {
-    const { username, password } = this.state
+    const { email, password } = this.state
     const { navigate } = this.props.navigation
 
     var details = {
-      'email': username,
+      'email': email,
       'password': password, 
     }
 
@@ -105,8 +105,7 @@ class Login extends React.Component {
   }
 
   isEnabled = () => {
-    const { username, password } = this.state;
-    return this.validateEmail(username) && password.length > 7;
+    return this.validEmail() && this.validPassword();
   }
 
   handleNameInputSubmit() {
@@ -119,19 +118,21 @@ class Login extends React.Component {
     }
   }
 
-  validateEmail = (email) => {
+  validEmail = () => {
+    const { email } = this.state;
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
   };
 
+  validPassword = () => {
+    const { password } = this.state;
+    return password.length > 7
+  }
+
   renderContent() {
     const { screen, fontLoaded } = this.state;
 
-    if (screen === 'feed') {
-      return <Feed />
-    } else {
       return (
-
         <LinearGradient
           style={styles.mainContainer}
           colors={['#FFEBB7', '#0E9577']}
@@ -151,10 +152,11 @@ class Login extends React.Component {
                 securedText={false}
                 placeholder='Email'
                 iconName='ios-person-outline'
-                value={this.state.username}
-                onChangeText={(text) => this.setState({ username: text })}
+                value={this.state.email}
+                onChangeText={(text) => this.setState({ email: text })}
                 keyType='next'
-                error="enter a valid email"
+                error= "enter a valid email"
+                valid={this.validEmail()}
               />
             </View>
             <View style={styles.inputContainer}>
@@ -166,9 +168,12 @@ class Login extends React.Component {
                 onChangeText={(text) => this.setState({ password: text })}
                 keyType='go'
                 onSubmitEditing={() => this.handlePress()}
+                error="password must be greater then 7"
+                valid={this.validPassword()}
               />
             </View>
             <ButtonOutline
+              style={{ marginTop: 20}}
               buttonEnabled={this.isEnabled()}
               title='Login'
               onPress={this.handlePress}
@@ -180,7 +185,6 @@ class Login extends React.Component {
         </LinearGradient>
       );
     }
-  }
 
   render() {
     return (
@@ -211,6 +215,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 40,
   },
+  
+  button: {
+    marginTop: 20,
+  }
 });
 
 export default connect(state => state)(Login) 

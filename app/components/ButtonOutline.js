@@ -1,5 +1,5 @@
 import React, { Component }  from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ViewPropTypes} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import propTypes from 'prop-types';
 
@@ -7,14 +7,16 @@ const ButtonOutline = (props) => {
 
 return (
   <TouchableOpacity
-      style={{borderColor: props.buttonEnabled ? '#18ebbb': '#eb1848',
+      style={[{borderColor: props.buttonEnabled ? '#18ebbb': '#eb1848',
       borderRadius: props.borderRadius,
       borderWidth: 3,
       width: props.width,
       height: props.height,
       alignItems: 'center',
-      justifyContent: 'center'
-      }}  
+      justifyContent: 'center',
+      }, 
+      {...props.style}
+      ]}  
       activeOpacity={props.buttonEnabled ? 0.25 : 1}
       onPress={props.onPress}
     >
@@ -31,6 +33,7 @@ ButtonOutline.propTypes = {
   height: propTypes.number.isRequired,
   borderRadius: propTypes.number,
   font: propTypes.string,
+  style: ViewPropTypes.style
 }
 
 const styles = StyleSheet.create({
