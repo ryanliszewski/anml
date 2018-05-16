@@ -1,22 +1,25 @@
-import { StyleSheet, Text, TouchableOpacity, ViewPropTypes } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, ViewPropTypes, Image, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { propTypes } from 'prop-types';
+import  propTypes  from 'prop-types';
+import React from 'react';  
+
 
 const Post = (props) => {
 
   _renderImage = () => {
-    const { image } = props.post; 
+   
     const { imageDim, onImagePressed } = props; 
 
-    if(image){
+    console.log(...props.imageDim)
+    if(props.post.image){
       return (
-        <TouchableOpacity
+        <TouchableOpacity 
           onPress={onImagePressed}
         >
           <View style={styles.imageContainer}>
             <Image
-              source={{ uri: image }}
-              style={...imageDim}
+              source={{ uri: props.post.image }}
+              style={{...props.imageDim}}
             />
           </View>
         </TouchableOpacity>
@@ -34,17 +37,20 @@ const Post = (props) => {
     }
   }
 
-  _renderProfileImage = (renderProfileImage) => {
-    return (
-      <Image
-        source={{ uri: image }}
-        style={{
-          width: 30,
-          height: 30,
-          borderRadius: 15,
-        }}
-      />
-    )
+  _renderProfileImage = () => {
+    const { profile_image } = props.post.user
+    if(profile_image){
+      return (
+        <Image
+          source={{ uri: profile_image }}
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+          }}
+        />
+      )
+   }
   }
 
   _renderProfile = () => {
@@ -57,14 +63,12 @@ const Post = (props) => {
       <View style={styles.headerContainer}>
         {this._renderProfileImage()}
         <View style={styles.nameLocationContainer}>
-          <Text style={styles.nameText}> {post.user.name} </Text>
+          <Text style={styles.nameText}> {props.post.user.name} </Text>
         </View>
       </View>
     </TouchableOpacity>
     )
   }
-
-  render() {
 
     return (
       <View
@@ -97,7 +101,7 @@ const Post = (props) => {
               size={30}
               color='#085947'
               style={{ paddingRight: 16 }}
-            />
+            />  
           </TouchableOpacity>
           <Ionicons
             name="ios-paper-plane-outline"
@@ -114,17 +118,16 @@ const Post = (props) => {
         </View>
       </View> 
     );
-  }
 }
 
 Post.propTypes = {
-  onLikedPressed: propTypes.function,
-  onCommentPressed: propTypes.function, 
-  onProfilePressed: propTypes.function, 
-  onImagePressed: propTypes.function,
-  user: propTypes.object, 
-  post: propTypes.object,
-  imageDim: ViewPropTypes.style
+  // onLikedPressed: propTypes.func,
+  // onCommentPressed: propTypes.func, 
+  // onProfilePressed: propTypes.func, 
+  // onImagePressed: propTypes.func,
+  // user: propTypes.object, 
+    post: propTypes.object.required,
+    imageDim: ViewPropTypes.style
 }
 
 const styles = StyleSheet.create({
