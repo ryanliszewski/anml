@@ -42,6 +42,8 @@ class Login extends React.Component {
       'password': password, 
     }
 
+    console.log(details);
+
     var formBody = [];
 
     for(var property in details){
@@ -62,7 +64,10 @@ class Login extends React.Component {
         body: formBody
       });
 
+      console.log(response);
+
       let responseJSON = null
+      console.log(response.status);
 
       if (response.status === 201) {
 

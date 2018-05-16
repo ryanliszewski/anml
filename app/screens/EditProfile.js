@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableHighlight } from 'react-native'
 import { Input } from 'react-native-elements';
 
 export default class componentName extends Component {
-  
+    
   constructor(props){
     super(props)
 

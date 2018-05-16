@@ -67,8 +67,6 @@ class CreatePost extends Component {
         console.log(response.body);
   
         this.setState({ image: response.body.postResponse.location });
-
-
       });
   }
 

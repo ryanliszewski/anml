@@ -18,12 +18,32 @@ export default class componentName extends Component {
 
   async componentDidMount(){
     this.fetchComments()
-
   }
 
   _renderComment = ({ item: comment }) => {
     
   }
+
+  _renderHeader = (comment) => {
+    return(
+      <View>
+        <View>
+          <Image>
+
+          </Image>
+          <Text></Text>
+
+        </View>
+
+        <View>
+
+          
+        </View>
+
+      </View>
+    );
+  }
+
 
   async fetchComments() {
     
@@ -77,6 +97,7 @@ export default class componentName extends Component {
 
       {!isCommentsLoading &&
         <FlatList 
+          ListHeaderComponent={() => this._renderHeader()}
           data={comments}
           renderItem={({item}) => this._renderComment({item})}
         />
