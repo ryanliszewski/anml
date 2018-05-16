@@ -6,7 +6,6 @@ import EditProfile from '../screens/EditProfile';
 
 export default StackNavigator({
   
-
   Profile: {
     screen: Profile,
   },

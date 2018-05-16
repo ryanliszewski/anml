@@ -25,6 +25,6 @@ export default StackNavigator({
       borderBottomWidth: 0,  
     }
   },
-}
-)
+})
+
 

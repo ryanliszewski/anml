@@ -7,15 +7,16 @@ const ButtonOutline = (props) => {
 
 return (
   <TouchableOpacity
-      style={[{borderColor: props.buttonEnabled ? '#18ebbb': '#eb1848',
-      borderRadius: props.borderRadius,
-      borderWidth: 3,
-      width: props.width,
-      height: props.height,
-      alignItems: 'center',
-      justifyContent: 'center',
+      style={[
+        {borderColor: props.buttonEnabled ? '#18ebbb': '#eb1848',
+        borderRadius: props.borderRadius,
+        borderWidth: 3,
+        width: props.width,
+        height: props.height,
+        alignItems: 'center',
+        justifyContent: 'center',
       }, 
-      {...props.style}
+        {...props.style}
       ]}  
       activeOpacity={props.buttonEnabled ? 0.25 : 1}
       onPress={props.onPress}

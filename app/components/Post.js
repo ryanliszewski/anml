@@ -1,11 +1,40 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { propTypes } from 'prop-types';
 
 const Post = (props) => {
 
 
+  renderImage = (image) => {
+    if(image){
+      
+    }
+  }
 
+  renderText = () => {
 
+  }
+
+  renderProfileImage = (renderProfileImage) => {
+
+  }
+
+  renderProfile = () => {
+    const { onProfilePressed } = props; 
+
+    return (
+      <TouchableOpacity
+      onPress={onProfilePressed}
+      >
+      <View style={styles.headerContainer}>
+        {this._renderProfileImage(post.user.profile_image)}
+        <View style={styles.nameLocationContainer}>
+          <Text style={styles.nameText}> {post.user.name} </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+    )
+  }
 
   return(
     <View
@@ -16,18 +45,6 @@ const Post = (props) => {
       shadowOpacity={0.75}
     >
 
-      <TouchableOpacity
-        onPress={() => navigate('Profile', {
-          user: post.user,
-        })}
-      >
-        <View style={styles.headerContainer}>
-          {this._renderProfileImage(post.user.profile_image)}
-          <View style={styles.nameLocationContainer}>
-            <Text style={styles.nameText}> {post.user.name} </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
       {this._renderImage(post.image)}
       
       <View style={styles.buttonsContainer}>
@@ -39,7 +56,6 @@ const Post = (props) => {
             size={30}
             color='#085947'
             style={{ paddingRight: 16 }}
-
           />
         </TouchableOpacity>
 
@@ -71,3 +87,19 @@ const Post = (props) => {
     </View> 
   );
 }
+
+Post.propTypes = {
+
+  onLikedPressed: propTypes.function,
+  onCommentPressed: propTypes.function, 
+  onProfilePressed: propTypes.function, 
+  onImagePressed: propTypes.function,
+  profileImage: propTypes.string, 
+  image: propTypes.string, 
+  username: propTypes.username
+
+}
+
+const styles = StyleSheet.create({
+  
+});

@@ -12,6 +12,8 @@ import AlertCustom from '../components/Alert';
 import Logo from '../components/Logo';
 import { updateUserDetails } from '../actions/user';
 
+const window = Dimensions.get('window');
+
 class Login extends React.Component {
 
   constructor(props) {
@@ -63,10 +65,7 @@ class Login extends React.Component {
         body: formBody
       });
 
-      console.log(response);
-
-      let responseJSON = null
-      console.log(response.status);
+      let responseJSON = null;
 
       if (response.status === 201) {
 
@@ -87,7 +86,6 @@ class Login extends React.Component {
         )
       } else {
         const error = responseJSON.message
-
         console.log("Server request failed " + error);
       }
     } catch (error) {
@@ -173,13 +171,13 @@ class Login extends React.Component {
               />
             </View>
             <ButtonOutline
-              style={{ marginTop: 20}}
+              style={{ marginTop: 10}}
               buttonEnabled={this.isEnabled()}
               title='Login'
               onPress={this.handlePress}
-              width={160}
-              height={40}
-              borderRadius={40}
+              width={window.width * 0.4}
+              height={window.height * 0.06}
+              borderRadius={window.height * 0.06}
             />
           </View>
         </LinearGradient>
@@ -204,8 +202,8 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    width: Dimensions.get('window').width * 0.7,
-    height: Dimensions.get('window').height * 0.05,
+    width: window.width * 0.7,
+    height: window.height * 0.05,
     marginBottom: 10,
   },
 

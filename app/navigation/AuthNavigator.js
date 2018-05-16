@@ -13,5 +13,5 @@ export default SwitchNavigator(
   },
   {
     initialRouteName: 'Landing',
-  }
+  }, 
 );

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button, Dimensions } from 'react-native';
+import { StyleSheet, 
+  Text, View, Image, ScrollView, FlatList, Platform, TouchableOpacity, Alert, TouchableHighlight, AsyncStorage, Button, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { updateUserDetails } from '../actions/user';
 import Logo from '../components/Logo';
-
 
 class Feed extends Component {
 
@@ -42,15 +42,14 @@ class Feed extends Component {
       });
 
       let responseJSON = null
+      responseJSON = await response.json();
 
       if (response.status === 200) {
-        responseJSON = await response.json();
         this.setState({
           isFeedLoading: false,
           posts: responseJSON,
         })
       } else {
-        responseJSON = await response.json();
         const error = responseJSON.message
 
         this.setState({ errors: responseJSON.errors })
@@ -64,7 +63,6 @@ class Feed extends Component {
       Alert.alert('Unable to get the feed. Please try again later')
     }
   }
-
 
   _renderProfileImage = (image) => {
     if (image) {
@@ -248,7 +246,6 @@ renderContent() {
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
