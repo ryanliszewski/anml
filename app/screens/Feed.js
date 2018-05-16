@@ -6,7 +6,9 @@ import { LinearGradient } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { updateUserDetails } from '../actions/user';
+
 import Logo from '../components/Logo';
+import Post from '../components/Post';
 
 class Feed extends Component {
 
@@ -64,21 +66,6 @@ class Feed extends Component {
     }
   }
 
-  _renderProfileImage = (image) => {
-    if (image) {
-      return (
-        <Image
-          source={{ uri: image }}
-          style={{
-            width: 30,
-            height: 30,
-            borderRadius: 15,
-          }}
-        />
-      )
-    }
-  }
-
   onCommentButtonPressed = () => {
 
   }
@@ -124,100 +111,98 @@ class Feed extends Component {
     }
   }
 
-_renderDescription = (description) => {
-  if (description) {
-    return (
-      <Text style={styles.captionText}> {description} </Text>
-    )
-  }
-}
+// _renderImage = (image) => {
+//   const { navigate } = this.props.navigation
+//   if (image) {
+//     return (
+//       <TouchableOpacity
+//         onPress={() => navigate('Comments')}
+//       >
+//         <View style={styles.imageContainer}>
+//           <Image
+//             source={{ uri: image }}
+//             style={{
+//               width: Dimensions.get('window').width,
+//               height: Dimensions.get('window').width,
+//             }}
+//           />
+//         </View>
+//       </TouchableOpacity>
+//     )
+//   }
+// }
 
-_renderImage = (image) => {
-  const { navigate } = this.props.navigation
-  if (image) {
-    return (
-      <TouchableOpacity
-        onPress={() => navigate('Comments')}
-      >
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: image }}
-            style={{
-              width: Dimensions.get('window').width,
-              height: Dimensions.get('window').width,
-            }}
-          />
-        </View>
-      </TouchableOpacity>
-    )
-  }
-}
 
 _renderItem = ({ item: post }) => {
   const { navigate } = this.props.navigation
   return (
-    <View
-      style={styles.post}
-      shadowColor='#829c96'
-      shadowRadius='3'
-      shadowOffset={{ width: 2, height: -2 }}
-      shadowOpacity={0.75}
-    >
 
-      <TouchableOpacity
-        onPress={() => navigate('Profile', {
-          user: post.user,
-        })}
-      >
-        <View style={styles.headerContainer}>
-          {this._renderProfileImage(post.user.profile_image)}
-          <View style={styles.nameLocationContainer}>
-            <Text style={styles.nameText}> {post.user.name} </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-      {this._renderImage(post.image)}
+    <Post
       
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity
-          onPress={() => this.onLikedButtonPressed(post.id)}
-        >
-          <Ionicons
-            name="ios-heart-outline"
-            size={30}
-            color='#085947'
-            style={{ paddingRight: 16 }}
+    />
 
-          />
-        </TouchableOpacity>
+    // <View
+    //   style={styles.post}
+    //   shadowColor='#829c96'
+    //   shadowRadius='3'
+    //   shadowOffset={{ width: 2, height: -2 }}
+    //   shadowOpacity={0.75}
+    // >
 
-        <TouchableOpacity
-          onPress={() => navigate('Comments',{
-          post: post
-        })}
-        >
-          <Ionicons
-            name="ios-chatbubbles-outline"
-            size={30}
-            color='#085947'
-            style={{ paddingRight: 16 }}
-          />
-        </TouchableOpacity>
-        <Ionicons
-          name="ios-paper-plane-outline"
-          size={30}
-          color='#085947'
-        />
-      </View>
-      <View style={styles.captionContainer}>
-      {this._renderLikes(post.likes)}
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.nameText}>{post.user.name} </Text>
-          {this._renderDescription(post.description)}
-        </View>
-        <Text style={styles.timeText}> 2hr </Text>
-      </View>
-    </View>
+    //   <TouchableOpacity
+    //     onPress={() => navigate('Profile', {
+    //       user: post.user,
+    //     })}
+    //   >
+    //     <View style={styles.headerContainer}>
+    //       {this._renderProfileImage(post.user.profile_image)}
+    //       <View style={styles.nameLocationContainer}>
+    //         <Text style={styles.nameText}> {post.user.name} </Text>
+    //       </View>
+    //     </View>
+    //   </TouchableOpacity>
+    //   {this._renderImage(post.image)}
+      
+    //   <View style={styles.buttonsContainer}>
+    //     <TouchableOpacity
+    //       onPress={() => this.onLikedButtonPressed(post.id)}
+    //     >
+    //       <Ionicons
+    //         name="ios-heart-outline"
+    //         size={30}
+    //         color='#085947'
+    //         style={{ paddingRight: 16 }}
+
+    //       />
+    //     </TouchableOpacity>
+
+    //     <TouchableOpacity
+    //       onPress={() => navigate('Comments',{
+    //       post: post
+    //     })}
+    //     >
+    //       <Ionicons
+    //         name="ios-chatbubbles-outline"
+    //         size={30}
+    //         color='#085947'
+    //         style={{ paddingRight: 16 }}
+    //       />
+    //     </TouchableOpacity>
+    //     <Ionicons
+    //       name="ios-paper-plane-outline"
+    //       size={30}
+    //       color='#085947'
+    //     />
+    //   </View>
+    //   <View style={styles.captionContainer}>
+    //   {this._renderLikes(post.likes)}
+    //     <View style={styles.descriptionContainer}>
+    //       <Text style={styles.nameText}>{post.user.name} </Text>
+    //       {this._renderDescription(post.description)}
+    //     </View>
+    //     <Text style={styles.timeText}> 2hr </Text>
+    //   </View>
+    // </View>
   );
 }
 
