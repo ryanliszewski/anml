@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Alert, AsyncStorage, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { LinearGradient, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
@@ -52,7 +52,6 @@ class Login extends React.Component {
 
       formBody.push(encodedKey + "=" + encodedValue);
     }
-
     formBody = formBody.join("&");
 
     try {
@@ -150,11 +149,12 @@ class Login extends React.Component {
             <View style={styles.inputContainer}>
               <InputBottomBorder
                 securedText={false}
-                placeholder='Username'
+                placeholder='Email'
                 iconName='ios-person-outline'
                 value={this.state.username}
                 onChangeText={(text) => this.setState({ username: text })}
                 keyType='next'
+                error="enter a valid email"
               />
             </View>
             <View style={styles.inputContainer}>
@@ -176,12 +176,8 @@ class Login extends React.Component {
               height={40}
               borderRadius={40}
             />
-
           </View>
-
-        
         </LinearGradient>
-    
       );
     }
   }
@@ -204,11 +200,13 @@ const styles = StyleSheet.create({
   },
 
   inputContainer: {
-    paddingBottom: 20,
+    width: Dimensions.get('window').width * 0.7,
+    height: Dimensions.get('window').height * 0.05,
+    marginBottom: 10,
   },
 
   form: {
-    padding: 20,
+    padding: 40,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
