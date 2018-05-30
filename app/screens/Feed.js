@@ -51,7 +51,6 @@ class Feed extends Component {
   }
 
   onProfilePressed = (user) => {
-
     this.props.dispatch(updateSelectedUser(user));
     this.props.navigation.navigate('Profile');
   }

@@ -135,7 +135,7 @@ Post.propTypes = {
   onProfilePressed: propTypes.func, 
   onImagePressed: propTypes.func,
   user: propTypes.object, 
-  post: propTypes.object.required,
+  post: propTypes.object.isRequired,
   imageDim: ViewPropTypes.style
 }
 
